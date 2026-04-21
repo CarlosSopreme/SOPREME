@@ -427,6 +427,7 @@
     #scroll-canvas {
       position: absolute; top: 0; left: 0;
       width: 100%; height: 100%;
+      mix-blend-mode: multiply;
     }
 
     .anno-wrap {
@@ -1216,8 +1217,6 @@ function drawScrollFrame(idx) {
   const iw = img.naturalWidth, ih = img.naturalHeight;
 
   sctx.clearRect(0, 0, cw, ch);
-  sctx.fillStyle = '#E8367A';
-  sctx.fillRect(0, 0, cw, ch);
 
   const isMobile = cw < 768;
   let scale, dw, dh, dx, dy;
