@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SOPREME™ — The Supreme Superfruit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+  <style>
+    :root {
+      --pink:        #E8367A;
+      --pink-dark:   #C72F69;
+      --pink-deeper: #A82259;
+      --yellow:      #F5C842;
+      --green:       #96cc4d;
+      --green-dark:  #7ab038;
+      --white:       #FFFFFF;
+      --w75:  rgba(255,255,255,0.75);
+      --w50:  rgba(255,255,255,0.50);
+      --w20:  rgba(255,255,255,0.20);
+      --w12:  rgba(255,255,255,0.12);
+      --w08:  rgba(255,255,255,0.08);
+      --heading: 'Space Grotesk', sans-serif;
+      --body:    'Archivo', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: auto; }
+
+    body {
+      font-family: var(--body);
+      background: var(--pink);
+      color: var(--white);
+      overflow-x: hidden;
+    }
+
+    ::selection { background: var(--yellow); color: #1a1a1a; }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--pink-deeper); }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(var(--yellow), var(--pink-dark));
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover { box-shadow: 0 0 8px var(--yellow); }
+
+    /* ─── STARSCAPE ─── */
+    #starscape {
+      position: fixed; inset: 0;
+      pointer-events: none;
+      z-index: 0; opacity: 0.35;
+    }
+
+    /* ─── LOADER ─── */
+    #loader {
+      position: fixed; inset: 0;
+      background: var(--pink);
+      z-index: 9999;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 20px;
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+    }
+    #loader.hidden { opacity: 0; visibility: hidden; }
+
+    .loader-logo {
+      height: 56px; width: auto;
+      filter: brightness(0) invert(1);
+    }
+    .loader-brand {
+      font-family: var(--heading);
+      font-size: 2.4rem; font-weight: 700;
+      letter-spacing: 5px; color: var(--white);
+      display: none;
+    }
+    .loader-sub {
+      font-size: 0.72rem; letter-spacing: 4px;
+      text-transform: uppercase; color: var(--yellow);
+    }
+    .loader-bar-wrap {
+      width: 200px; height: 3px;
+      background: var(--w20); border-radius: 2px; overflow: hidden;
+    }
+    .loader-bar {
+      height: 100%; width: 0%;
+      background: linear-gradient(90deg, var(--yellow), #FFA500);
+      border-radius: 2px;
+      transition: width 0.08s linear;
+      box-shadow: 0 0 12px var(--yellow);
+    }
+    .loader-pct {
+      font-size: 0.72rem; color: var(--w75); letter-spacing: 1px;
+    }
+
+    /* ─── SCROLL PROGRESS ─── */
+    #scroll-progress {
+      position: fixed; top: 0; left: 0;
+      height: 3px; width: 0%;
+      background: linear-gradient(90deg, var(--green), var(--yellow), var(--green));
+      z-index: 1001;
+      box-shadow: 0 0 6px var(--yellow);
+      transition: width 0.08s linear;
+    }
+
+    /* ─── SCROLL TO TOP ─── */
+    #scroll-top-btn {
+      position: fixed; bottom: 32px; right: 32px;
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      background: var(--yellow);
+      color: #1a1a1a;
+      border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; font-weight: 700;
+      box-shadow: 0 4px 20px rgba(245,200,66,0.45);
+      z-index: 999;
+      opacity: 0; visibility: hidden;
+      transform: translateY(16px);
+      transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease, box-shadow 0.2s ease;
+    }
+    #scroll-top-btn.visible {
+      opacity: 1; visibility: visible;
+      transform: translateY(0);
+    }
+    #scroll-top-btn:hover {
+      box-shadow: 0 6px 28px rgba(245,200,66,0.7);
+      transform: translateY(-3px);
+    }
+    @media (max-width: 768px) {
+      #scroll-top-btn { bottom: 20px; right: 20px; width: 42px; height: 42px; }
+    }
+
+    /* ─── ANNOUNCEMENT BAR ─── */
+    .announce-bar {
+      background: var(--green-dark);
+      padding: 8px 16px;
+      text-align: center;
+      font-size: 0.8rem; font-weight: 600;
+      letter-spacing: 0.4px;
+      position: relative; z-index: 100;
+    }
+    .announce-bar a { color: var(--yellow); text-decoration: none; font-weight: 700; }
+
+    /* ─── NAVBAR OUTER (sticky wrapper) ─── */
+    #navbar-outer {
+      position: sticky; top: 0;
+      z-index: 500;
+      transition: padding 0.4s ease, background 0.4s ease;
+    }
+    #navbar-outer.pill {
+      padding: 8px 20px;
+    }
+
+    #navbar {
+      height: 66px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--pink);
+      padding: 0 40px;
+      transition: all 0.4s ease;
+    }
+    #navbar-outer.pill #navbar {
+      border-radius: 50px;
+      background: rgba(200, 47, 105, 0.92);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--w20);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+      padding: 0 28px;
+    }
+
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a {
+      color: var(--white); text-decoration: none;
+      font-size: 0.82rem; font-weight: 600;
+      letter-spacing: 1px; text-transform: uppercase;
+      opacity: 0.88; transition: opacity 0.2s, color 0.2s;
+    }
+    .nav-links a:hover { opacity: 1; color: var(--yellow); }
+
+    .nav-logo {
+      text-decoration: none; display: flex;
+      align-items: center; gap: 8px;
+    }
+    .nav-logo img {
+      height: 40px; width: auto;
+      filter: brightness(0) invert(1);
+    }
+    .nav-logo-fallback {
+      font-family: var(--heading); font-size: 1.5rem;
+      font-weight: 700; letter-spacing: 3px;
+      color: var(--white); display: none;
+    }
+
+    .nav-left-group { display: flex; flex: 1; }
+    .nav-right { display: flex; align-items: center; gap: 20px; flex: 1; justify-content: flex-end; }
+    .nav-shop-btn {
+      background: var(--yellow); color: #1a1a1a;
+      padding: 8px 22px; border-radius: 50px;
+      font-size: 0.78rem; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .nav-shop-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(245,200,66,0.45);
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-shop-btn { display: none; }
+      #navbar { padding: 0 20px; }
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+      padding: 80px 60px 80px;
+    }
+    .hero-split {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column; align-items: center;
+      gap: 48px; width: 100%; max-width: 1100px;
+    }
+
+    .hero-grid-overlay {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+      background-size: 44px 44px;
+    }
+
+    .orb {
+      position: absolute; border-radius: 50%;
+      filter: blur(90px); pointer-events: none;
+    }
+    .orb-1 {
+      width: 520px; height: 520px; background: var(--yellow); opacity: 0.18;
+      top: -120px; right: -80px;
+      animation: orbFloat 9s ease-in-out infinite;
+    }
+    .orb-2 {
+      width: 380px; height: 380px; background: var(--pink-deeper); opacity: 0.4;
+      bottom: -60px; left: -60px;
+      animation: orbFloat 11s ease-in-out infinite reverse;
+    }
+    .orb-3 {
+      width: 260px; height: 260px; background: #FF6B9D; opacity: 0.2;
+      top: 50%; left: 45%; transform: translate(-50%,-50%);
+      animation: orbFloat 14s ease-in-out infinite;
+    }
+    @keyframes orbFloat {
+      0%,100% { transform: translateY(0) scale(1); }
+      50%      { transform: translateY(-28px) scale(1.04); }
+    }
+
+    .hero-content {
+      position: relative; z-index: 1;
+      text-align: center; width: 100%;
+    }
+    .hero-eyebrow {
+      font-size: 0.75rem; font-weight: 700;
+      letter-spacing: 4px; text-transform: uppercase;
+      color: var(--yellow); margin-bottom: 18px;
+    }
+    .hero-title {
+      font-family: var(--heading);
+      font-size: clamp(3rem, 7.5vw, 6rem);
+      font-weight: 700; line-height: 1.02;
+      color: var(--white); margin-bottom: 22px;
+    }
+    .hero-title em { color: var(--yellow); font-style: normal; }
+    .hero-subtitle {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: var(--w75); margin-bottom: 36px;
+      line-height: 1.6;
+    }
+
+    .hero-tagline {
+      display: inline-block;
+      font-family: var(--heading);
+      font-size: clamp(1.2rem, 2.5vw, 1.7rem);
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: var(--yellow);
+      background: rgba(245,200,66,0.12);
+      border: 2px solid rgba(245,200,66,0.35);
+      border-radius: 50px;
+      padding: 10px 28px;
+      margin-bottom: 32px;
+      text-shadow: 0 0 20px rgba(245,200,66,0.4);
+    }
+
+    .hero-badges {
+      display: flex; flex-wrap: wrap;
+      gap: 10px; justify-content: center;
+      margin-bottom: 44px;
+    }
+    .badge {
+      display: flex; align-items: center; gap: 7px;
+      background: var(--w08); border: 1px solid var(--w20);
+      border-radius: 50px; padding: 6px 16px;
+      font-size: 0.8rem; font-weight: 600;
+      backdrop-filter: blur(8px);
+    }
+    .badge-dot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; }
+
+    .hero-buttons {
+      display: flex; gap: 14px;
+      justify-content: center; flex-wrap: wrap;
+    }
+    .hero-visual {
+      width: 100%;
+      position: relative; z-index: 1;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hero-visual img {
+      width: 100%; max-width: 960px;
+      border-radius: 24px;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.3), 0 0 60px rgba(245,200,66,0.15);
+      animation: heroImgFloat 6s ease-in-out infinite;
+    }
+    @keyframes heroImgFloat {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-12px); }
+    }
+    .btn-primary {
+      background: var(--yellow); color: #1a1a1a;
+      padding: 14px 38px; border-radius: 50px;
+      font-size: 0.95rem; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      border: none; cursor: pointer;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+      box-shadow: 0 4px 20px rgba(245,200,66,0.35);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(245,200,66,0.55);
+    }
+    .btn-secondary {
+      background: transparent; color: var(--white);
+      padding: 14px 38px; border-radius: 50px;
+      font-size: 0.95rem; font-weight: 600;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      border: 2px solid var(--w50); cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-secondary:hover { border-color: var(--white); background: var(--w08); }
+
+    .scroll-hint {
+      position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      opacity: 0.55; font-size: 0.68rem; letter-spacing: 2.5px; text-transform: uppercase;
+      animation: hintFade 3s ease-in-out infinite;
+    }
+    @keyframes hintFade { 0%,100%{opacity:0.55} 50%{opacity:0.9} }
+    .scroll-arrow {
+      width: 18px; height: 18px;
+      border-right: 2px solid var(--white);
+      border-bottom: 2px solid var(--white);
+      transform: rotate(45deg);
+      animation: arrowBounce 1.8s ease-in-out infinite;
+    }
+    @keyframes arrowBounce {
+      0%,100%{transform:rotate(45deg) translateY(0)} 50%{transform:rotate(45deg) translateY(5px)}
+    }
+
+    /* ─── MARQUEE ─── */
+    .marquee-section {
+      background: var(--green-dark); padding: 12px 0;
+      overflow: hidden; position: relative; z-index: 1;
+    }
+    .marquee-track {
+      display: flex; gap: 0;
+      animation: marquee 22s linear infinite;
+      white-space: nowrap; width: max-content;
+    }
+    .marquee-item {
+      display: inline-flex; align-items: center;
+      font-size: 0.82rem; font-weight: 700;
+      letter-spacing: 3px; text-transform: uppercase;
+      color: var(--white); padding: 0 28px;
+    }
+    .marquee-sep {
+      color: var(--yellow); font-size: 0.6rem;
+      display: inline-flex; align-items: center;
+      flex-shrink: 0;
+    }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ─── SCROLL ANIMATION ─── */
+    .scroll-anim-section {
+      height: 350vh; position: relative;
+    }
+    @media (max-width: 768px) { .scroll-anim-section { height: 280vh; } }
+    @media (max-width: 480px) { .scroll-anim-section { height: 240vh; } }
+
+    .scroll-anim-sticky {
+      position: sticky; top: 0;
+      height: 100vh; overflow: hidden;
+    }
+
+    #scroll-canvas {
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%;
+    }
+
+    .anno-wrap {
+      position: absolute; inset: 0;
+      pointer-events: none;
+    }
+
+    .anno-card {
+      position: absolute;
+      background: rgba(176, 31, 88, 0.72);
+      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255,255,255,0.28);
+      border-radius: 20px; padding: 18px 22px;
+      max-width: 250px;
+      opacity: 0; transform: translateY(16px) scale(0.97);
+      transition: opacity 0.45s ease, transform 0.45s ease;
+    }
+    .anno-card.visible {
+      opacity: 1; transform: translateY(0) scale(1);
+    }
+    .anno-num {
+      font-family: var(--heading); font-size: 0.7rem;
+      font-weight: 700; letter-spacing: 2px;
+      color: var(--yellow); margin-bottom: 5px;
+    }
+    .anno-title {
+      font-family: var(--heading); font-size: 1.05rem;
+      font-weight: 700; color: var(--white); margin-bottom: 6px;
+    }
+    .anno-desc {
+      font-size: 0.8rem; color: var(--w75); line-height: 1.55;
+    }
+    .anno-stat {
+      font-family: var(--heading); font-size: 1.9rem;
+      font-weight: 700; color: var(--yellow); margin-top: 10px;
+    }
+    .anno-stat-label {
+      font-size: 0.68rem; letter-spacing: 1px; color: var(--w50);
+    }
+
+    .anno-card[data-card="1"] { top: 18%; left: 3.5%; }
+    .anno-card[data-card="2"] { top: 18%; right: 3.5%; }
+    .anno-card[data-card="3"] { bottom: 22%; left: 3.5%; }
+    .anno-card[data-card="4"] { bottom: 22%; right: 3.5%; }
+
+    @media (max-width: 768px) {
+      .anno-card {
+        max-width: calc(50% - 16px);
+        border-radius: 12px; padding: 10px 12px;
+        top: auto !important; bottom: auto !important;
+        left: auto !important; right: auto !important;
+      }
+      .anno-card[data-card="1"] { top: 12% !important; left: 8px !important; }
+      .anno-card[data-card="2"] { top: 12% !important; right: 8px !important; }
+      .anno-card[data-card="3"] { top: 55% !important; left: 8px !important; }
+      .anno-card[data-card="4"] { top: 55% !important; right: 8px !important; }
+      .anno-desc { display: none; }
+      .anno-stat { font-size: 1.4rem; }
+      .anno-title { font-size: 0.82rem; }
+    }
+
+    /* ─── SPECS ─── */
+    .specs-section {
+      background: var(--pink-dark);
+      padding: 88px 40px; position: relative; z-index: 1;
+    }
+    .section-label {
+      text-align: center;
+      display: inline-block;
+      font-size: 0.82rem;
+      font-weight: 800; letter-spacing: 4px;
+      text-transform: uppercase; color: #fff;
+      background: var(--green);
+      padding: 7px 22px; border-radius: 50px;
+      margin-bottom: 18px;
+      box-shadow: 0 0 12px rgba(150,204,77,0.6),
+                  0 0 28px rgba(150,204,77,0.35),
+                  0 0 55px rgba(150,204,77,0.2);
+    }
+    .section-title {
+      font-family: var(--heading);
+      font-size: clamp(2rem, 4.5vw, 3.4rem);
+      font-weight: 700; text-align: center;
+      color: var(--white); margin-bottom: 60px;
+      text-shadow: 0 0 20px rgba(245,200,66,0.45),
+                   0 0 50px rgba(245,200,66,0.2),
+                   0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      gap: 20px; max-width: 900px; margin: 0 auto;
+    }
+    .spec-item {
+      text-align: center; padding: 36px 16px;
+      background: var(--w08); border: 1px solid var(--w20);
+      border-radius: 20px;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .spec-item:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+    }
+    .spec-number {
+      font-family: var(--heading);
+      font-size: clamp(2rem,4vw,3.4rem);
+      font-weight: 700; color: var(--yellow);
+      line-height: 1; margin-bottom: 10px;
+    }
+    .spec-label {
+      font-size: 0.77rem; font-weight: 600;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--w75);
+    }
+    @media (max-width: 680px) { .specs-grid { grid-template-columns: repeat(2,1fr); } }
+
+    /* ─── FEATURES ─── */
+    .features-section { padding: 88px 40px; position: relative; z-index: 1; }
+    .features-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 20px; max-width: 1120px; margin: 0 auto;
+    }
+    .feat-card {
+      background: var(--w12); border: 1px solid var(--w20);
+      border-radius: 20px; padding: 32px 26px;
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .feat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.12);
+    }
+    .feat-icon {
+      width: 68px; height: 68px;
+      background: linear-gradient(135deg, var(--yellow), #FFA500);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 20px;
+      box-shadow: 0 0 0 6px rgba(245,200,66,0.18), 0 6px 24px rgba(245,200,66,0.35);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .feat-icon i {
+      font-size: 2rem; color: #1a1a1a;
+    }
+    .feat-card:hover .feat-icon {
+      transform: scale(1.12) rotate(-6deg);
+      box-shadow: 0 0 0 10px rgba(245,200,66,0.22), 0 8px 32px rgba(245,200,66,0.5);
+    }
+    .feat-title {
+      font-family: var(--heading); font-size: 1.1rem;
+      font-weight: 700; color: var(--white); margin-bottom: 10px;
+    }
+    .feat-desc {
+      font-size: 0.87rem; color: var(--w75); line-height: 1.65;
+    }
+    @media (max-width: 900px) { .features-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 560px) { .features-grid { grid-template-columns: 1fr; } }
+
+    /* ─── LIFESTYLE GRID ─── */
+    .lifestyle-section {
+      padding: 80px 40px;
+      background: var(--pink);
+      position: relative; z-index: 1;
+    }
+    .lifestyle-section .section-label { text-align: center; }
+    .lifestyle-section .section-title { text-align: center; margin-bottom: 48px; }
+    .lifestyle-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 12px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .lifestyle-grid .lg-item {
+      overflow: hidden; border-radius: 16px;
+      position: relative;
+    }
+    .lifestyle-grid .lg-item img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+    .lifestyle-grid .lg-item:hover img { transform: scale(1.04); }
+    .lifestyle-grid .lg-wide {
+      grid-column: 1 / -1;
+      max-height: 480px;
+    }
+    .lifestyle-grid .lg-tall { min-height: 320px; }
+    @media (max-width: 680px) {
+      .lifestyle-grid { grid-template-columns: 1fr; }
+      .lifestyle-grid .lg-wide { grid-column: 1; max-height: 280px; }
+    }
+
+    /* ─── CTA ─── */
+    .cta-section {
+      background: var(--pink-dark); padding: 104px 40px;
+      text-align: center; position: relative; overflow: hidden; z-index: 1;
+    }
+    .cta-orb-1 {
+      width: 420px; height: 420px; background: var(--yellow); opacity: 0.12;
+      top: -120px; right: -80px;
+    }
+    .cta-orb-2 {
+      width: 280px; height: 280px; background: var(--pink-deeper); opacity: 0.35;
+      bottom: -60px; left: -40px;
+    }
+    .cta-title {
+      font-family: var(--heading);
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700; color: var(--white);
+      margin-bottom: 16px; position: relative; z-index: 1;
+    }
+    .cta-sub {
+      font-size: 1rem; color: var(--w75);
+      max-width: 500px; margin: 0 auto 44px;
+      line-height: 1.65; position: relative; z-index: 1;
+    }
+    #cta-btn {
+      position: relative; z-index: 1;
+      font-size: 1.05rem; padding: 16px 52px;
+    }
+
+    /* ─── TESTIMONIALS ─── */
+    .testi-section {
+      padding: 88px 0 88px 40px;
+      position: relative; z-index: 1;
+    }
+    .testi-section .section-label,
+    .testi-section .section-title { text-align: left; }
+    .testi-section .section-title { margin-bottom: 40px; }
+
+    .testi-scroll {
+      overflow-x: auto; overflow-y: hidden;
+      cursor: grab; -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .testi-scroll::-webkit-scrollbar { display: none; }
+    .testi-scroll:active { cursor: grabbing; }
+
+    .testi-track {
+      display: flex; gap: 20px;
+      padding-right: 40px; width: max-content;
+      user-select: none;
+    }
+
+    .testi-card {
+      flex: 0 0 360px;
+      background: var(--w12); border: 1px solid var(--w20);
+      border-radius: 20px; padding: 28px;
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      scroll-snap-align: start;
+    }
+    .testi-stars { color: var(--yellow); font-size: 1rem; letter-spacing: 2px; margin-bottom: 14px; }
+    .testi-text {
+      font-size: 0.9rem; color: var(--w75); line-height: 1.7;
+      margin-bottom: 20px; font-style: italic;
+    }
+    .testi-author { font-weight: 700; color: var(--white); font-size: 0.9rem; }
+    .testi-role { font-size: 0.73rem; color: var(--yellow); margin-top: 3px; }
+
+    /* ─── FOOTER ─── */
+    .footer {
+      background: var(--pink-deeper); padding: 64px 40px 28px;
+      position: relative; z-index: 1;
+    }
+    .footer-top {
+      display: flex; justify-content: space-between;
+      align-items: flex-start; gap: 40px;
+      margin-bottom: 52px; flex-wrap: wrap;
+    }
+    .footer-brand { max-width: 280px; }
+    .footer-logo img {
+      height: 46px; width: auto;
+      filter: brightness(0) invert(1);
+      margin-bottom: 10px; display: block;
+    }
+    .footer-tagline {
+      font-size: 0.72rem; letter-spacing: 3px;
+      color: var(--yellow); text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .footer-desc {
+      font-size: 0.84rem; color: var(--w75); line-height: 1.65;
+    }
+    .footer-col h4 {
+      font-family: var(--heading); font-size: 0.72rem;
+      font-weight: 700; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--yellow);
+      margin-bottom: 16px;
+    }
+    .footer-col a {
+      display: block; color: var(--w75); text-decoration: none;
+      font-size: 0.86rem; margin-bottom: 10px;
+      transition: color 0.2s;
+    }
+    .footer-col a:hover { color: var(--white); }
+
+    .email-row { display: flex; margin-top: 6px; }
+    .email-input {
+      flex: 1; padding: 10px 16px;
+      background: var(--w08); border: 1px solid var(--w20);
+      border-right: none; border-radius: 8px 0 0 8px;
+      color: var(--white); font-family: var(--body); font-size: 0.84rem;
+      outline: none;
+    }
+    .email-input::placeholder { color: var(--w50); }
+    .email-btn {
+      padding: 10px 20px; background: var(--yellow);
+      color: #1a1a1a; border: none;
+      border-radius: 0 8px 8px 0; font-weight: 700;
+      font-size: 0.82rem; cursor: pointer;
+      transition: background 0.2s;
+    }
+    .email-btn:hover { background: #FFD700; }
+
+    .footer-divider { height: 1px; background: var(--w08); margin-bottom: 22px; }
+    .footer-bottom {
+      display: flex; justify-content: space-between;
+      align-items: center; flex-wrap: wrap; gap: 12px;
+    }
+    .footer-copy { font-size: 0.78rem; color: var(--w50); }
+    .footer-bl { display: flex; gap: 20px; }
+    .footer-bl a {
+      font-size: 0.76rem; color: var(--w50);
+      text-decoration: none; transition: color 0.2s;
+    }
+    .footer-bl a:hover { color: var(--white); }
+
+    /* ─── CONFETTI CANVAS ─── */
+    #confetti-canvas {
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 9998;
+    }
+
+    @media (max-width: 480px) {
+      .hero { padding: 60px 20px 80px; }
+      .specs-section, .features-section, .cta-section { padding: 64px 20px; }
+      .testi-section { padding: 64px 0 64px 20px; }
+      .footer { padding: 48px 20px 24px; }
+    }
+
+    /* ─── PAGE TRANSITION OVERLAY ─── */
+    #page-transition {
+      position: fixed; inset: 0;
+      background: var(--yellow);
+      z-index: 99999;
+      clip-path: circle(0% at 50% 50%);
+      pointer-events: none;
+    }
+    #page-transition.expand {
+      pointer-events: all;
+      animation: circleExpand 0.65s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+    }
+    @keyframes circleExpand {
+      from { clip-path: circle(0% at var(--tx) var(--ty)); }
+      to   { clip-path: circle(150% at var(--tx) var(--ty)); }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="starscape"></canvas>
+<canvas id="confetti-canvas"></canvas>
+<div id="scroll-progress"></div>
+<button id="scroll-top-btn" aria-label="Back to top">&#8679;</button>
+<div id="page-transition"></div>
+
+<!-- LOADER -->
+<div id="loader">
+  <img class="loader-logo" src="logo.png" alt="SOPREME"
+       onerror="this.style.display='none';document.querySelector('.loader-brand').style.display='block'">
+  <div class="loader-brand">SOPREME™</div>
+  <div class="loader-sub">The Supreme Superfruit™</div>
+  <div class="loader-bar-wrap"><div class="loader-bar" id="loader-bar"></div></div>
+  <div class="loader-pct" id="loader-pct">Loading…</div>
+</div>
+
+<!-- ANNOUNCE BAR -->
+<div class="announce-bar">
+  🌿 Find Us @ <a href="#">Whole Foods</a>, Sprouts, HEB, Gelson's + <a href="#">Amazon!</a>
+</div>
+
+<!-- NAVBAR -->
+<div id="navbar-outer">
+  <nav id="navbar">
+    <div class="nav-left-group">
+      <ul class="nav-links">
+        <li><a href="shop.html">Shop</a></li>
+        <li><a href="#">About</a></li>
+      </ul>
+    </div>
+    <a href="#" class="nav-logo">
+      <img src="logo.png" alt="SOPREME"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span class="nav-logo-fallback">SOPREME™</span>
+    </a>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="#">Wholesale</a></li>
+        <li><a href="#">Find Us</a></li>
+      </ul>
+      <a href="shop.html" class="nav-shop-btn">Shop Now</a>
+    </div>
+  </nav>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid-overlay"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="hero-split">
+    <div class="hero-content">
+      <div class="hero-eyebrow">✦ &nbsp;Purely Natural. Zero Compromises. &nbsp;✦</div>
+      <h1 class="hero-title">THE <em>SUPREME</em><br>SUPERFRUIT™</h1>
+      <p class="hero-subtitle">100% Pure Soursop Juice.</p>
+    <p class="hero-tagline">One Ingredient. Tons of Benefits.</p>
+      <div class="hero-badges">
+        <div class="badge"><div class="badge-dot"></div>Zero Artificial Ingredients</div>
+        <div class="badge"><div class="badge-dot"></div>Rich in Antioxidants</div>
+        <div class="badge"><div class="badge-dot"></div>Natural Electrolytes</div>
+        <div class="badge"><div class="badge-dot"></div>Non-GMO Certified</div>
+      </div>
+      <div class="hero-buttons">
+        <a href="shop.html" class="btn-primary">Shop Now &nbsp;→</a>
+        <a href="#scroll-section" class="btn-secondary">See What's Inside</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <img src="products/hf_20260421_174940_302693e7-f170-4c43-a36d-2e4e0ae7cd31.png" alt="SOPREME full product lineup on ice at the beach">
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-section">
+  <div class="marquee-track" id="marquee-track">
+    <span class="marquee-item">Digestive Health</span><span class="marquee-sep">♦</span>
+    <span class="marquee-item">Inflammation Balance</span><span class="marquee-sep">♦</span>
+    <span class="marquee-item">Rich in Antioxidants</span><span class="marquee-sep">♦</span>
+    <span class="marquee-item">Immune System Support</span><span class="marquee-sep">♦</span>
+    <span class="marquee-item">Stress Reduction</span><span class="marquee-sep">♦</span>
+    <span class="marquee-item">Rich in Acetogenins</span><span class="marquee-sep">♦</span>
+    <span class="marquee-item">Hydrating &amp; Refreshing</span><span class="marquee-sep">♦</span>
+    <!-- duplicate for seamless loop -->
+    <span class="marquee-item">Digestive Health</span><span class="marquee-sep">♦</span>
+    <span class="marquee-item">Inflammation Balance</span><span class="marquee-sep">♦</span>
+    <span class="marquee-item">Rich in Antioxidants</span><span class="marquee-sep">♦</span>
+    <span class="marquee-item">Immune System Support</span><span class="marquee-sep">♦</span>
+    <span class="marquee-item">Stress Reduction</span><span class="marquee-sep">♦</span>
+    <span class="marquee-item">Rich in Acetogenins</span><span class="marquee-sep">♦</span>
+    <span class="marquee-item">Hydrating &amp; Refreshing</span><span class="marquee-sep">♦</span>
+  </div>
+</div>
+
+<!-- SCROLL ANIMATION -->
+<section class="scroll-anim-section" id="scroll-section">
+  <div class="scroll-anim-sticky">
+    <canvas id="scroll-canvas"></canvas>
+    <div class="anno-wrap">
+      <div class="anno-card" data-card="1" data-show="0.12" data-hide="0.34">
+        <div class="anno-num">01</div>
+        <div class="anno-title">100% Pure</div>
+        <div class="anno-desc">One ingredient: Soursop juice with pulp. Nothing else added. Ever.</div>
+        <div class="anno-stat">1</div>
+        <div class="anno-stat-label">Ingredient Only</div>
+      </div>
+      <div class="anno-card" data-card="2" data-show="0.34" data-hide="0.56">
+        <div class="anno-num">02</div>
+        <div class="anno-title">Antioxidants & Acetogenins</div>
+        <div class="anno-desc">Powerful compounds unique to soursop — not found in any other fruit.</div>
+        <div class="anno-stat">120%</div>
+        <div class="anno-stat-label">Daily Vitamin C</div>
+      </div>
+      <div class="anno-card" data-card="3" data-show="0.56" data-hide="0.78">
+        <div class="anno-num">03</div>
+        <div class="anno-title">Natural Electrolytes</div>
+        <div class="anno-desc">Real hydration from nature. Potassium-rich for lasting energy and recovery.</div>
+        <div class="anno-stat">660mg</div>
+        <div class="anno-stat-label">Potassium Per Can</div>
+      </div>
+      <div class="anno-card" data-card="4" data-show="0.78" data-hide="0.96">
+        <div class="anno-num">04</div>
+        <div class="anno-title">Non-GMO & Kosher</div>
+        <div class="anno-desc">Lab tested. Triple certified. The highest global food safety standards.</div>
+        <div class="anno-stat">FSSC</div>
+        <div class="anno-stat-label">22000 Certified Facility</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SPECS -->
+<section class="specs-section">
+  <div class="section-label">By The Numbers</div>
+  <h2 class="section-title">Real Nutrients. Real Benefits.</h2>
+  <div class="specs-grid" id="specs-grid">
+    <div class="spec-item">
+      <div class="spec-number" data-target="120" data-suffix="%">0%</div>
+      <div class="spec-label">Daily Vitamin C</div>
+    </div>
+    <div class="spec-item">
+      <div class="spec-number" data-target="10" data-suffix="g">0g</div>
+      <div class="spec-label">Dietary Fiber</div>
+    </div>
+    <div class="spec-item">
+      <div class="spec-number" data-target="660" data-suffix="mg">0mg</div>
+      <div class="spec-label">Potassium</div>
+    </div>
+    <div class="spec-item">
+      <div class="spec-number" data-target="0" data-suffix="">0</div>
+      <div class="spec-label">Added Sugars</div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-section">
+  <div class="section-label">Why SOPREME™</div>
+  <h2 class="section-title">The Supreme Difference</h2>
+  <div class="features-grid">
+    <div class="feat-card">
+      <div class="feat-icon"><i class="ph-bold ph-crown"></i></div>
+      <div class="feat-title">The Supreme Superfruit™</div>
+      <div class="feat-desc">Soursop is one of nature's most powerful fruits — rich in fiber, antioxidants, vitamins, and unique acetogenins not found in any other fruit.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon"><i class="ph-bold ph-drop-half-bottom"></i></div>
+      <div class="feat-title">One Ingredient Only</div>
+      <div class="feat-desc">Just soursop juice with pulp. No added sugars, no artificial colors, no preservatives, no fillers. Read the label — that's it.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon"><i class="ph-bold ph-heart"></i></div>
+      <div class="feat-title">Gut Health Support</div>
+      <div class="feat-desc">10g of dietary fiber per can — 34% of your daily value — to support a happy, healthy digestive system.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon"><i class="ph-bold ph-lightning"></i></div>
+      <div class="feat-title">Slow-Release Energy</div>
+      <div class="feat-desc">Low glycemic with natural electrolytes and slow-release sugars. No crash. Just clean, sustained energy throughout your day.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon"><i class="ph-bold ph-plant"></i></div>
+      <div class="feat-title">Grown in Vietnam</div>
+      <div class="feat-desc">Sourced from lush tropical jungle farms in Vietnam, where the world's highest-quality soursop grows in its natural habitat.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon"><i class="ph-bold ph-seal-check"></i></div>
+      <div class="feat-title">Triple Certified Quality</div>
+      <div class="feat-desc">Non-GMO, Kosher certified, and FSSC 22000 food safety certified. Lab tested for highest quality control. Zero compromises.</div>
+    </div>
+  </div>
+</section>
+
+<!-- LIFESTYLE -->
+<section class="lifestyle-section">
+  <div class="section-label">Real Moments</div>
+  <h2 class="section-title">Made for Life's Best Days.</h2>
+  <div class="lifestyle-grid">
+    <div class="lg-item lg-wide">
+      <img src="products/hf_20260421_053442_d818cf2a-aef7-40cc-a6ba-b808bafacdef.png" alt="Two hands toasting SOPREME cans at sunset">
+    </div>
+    <div class="lg-item lg-tall">
+      <img src="products/hf_20260421_053220_1a25b6a8-4011-4c8f-9cc6-11554e5c8ac5.png" alt="Couple on the beach with SOPREME">
+    </div>
+    <div class="lg-item lg-tall">
+      <img src="products/hf_20260421_053458_7330b426-9fc0-4145-b020-7599081a781d.png" alt="SOPREME can held up against blue sky">
+    </div>
+    <div class="lg-item lg-wide">
+      <img src="products/hf_20260421_053508_45bca401-d2c9-429b-aada-bb7f1c24d4dc.png" alt="Woman drinking SOPREME on the beach">
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="orb cta-orb-1"></div>
+  <div class="orb cta-orb-2"></div>
+  <h2 class="cta-title">Ready to Experience<br>The Supreme Superfruit?</h2>
+  <p class="cta-sub">Join thousands of health-conscious families who've made SOPREME part of their daily ritual.</p>
+  <button class="btn-primary" id="cta-btn">✨ Try SOPREME Today ✨</button>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testi-section">
+  <div class="section-label">What People Are Saying</div>
+  <h2 class="section-title">Loved by Families.</h2>
+  <div class="testi-scroll" id="testi-scroll">
+    <div class="testi-track" id="testi-track">
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"I've been drinking SOPREME every morning for 3 months and my digestion has never felt better. The flavor is incredible — tropical and refreshing. My whole family is hooked."</p>
+        <div class="testi-author">Maria T.</div>
+        <div class="testi-role">Verified Buyer</div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Finally a juice with ONE ingredient. I read every single label and SOPREME is the only soursop juice I trust. Pure, clean, and absolutely delicious. Nothing hidden."</p>
+        <div class="testi-author">James K.</div>
+        <div class="testi-role">Verified Buyer</div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"My kids call it their 'green heart juice' because of the soursop on the can. It's become our daily ritual. Knowing it's 100% pure with nothing added makes me feel great as a parent."</p>
+        <div class="testi-author">Ashley R.</div>
+        <div class="testi-role">Verified Buyer</div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"I'm a personal trainer and I recommend SOPREME to all my clients. The potassium content is impressive and the natural electrolytes are real. This is actual food, not a supplement."</p>
+        <div class="testi-author">David M.</div>
+        <div class="testi-role">Verified Buyer</div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"I've tried every soursop product out there and nothing comes close to SOPREME. You can taste the difference immediately. Real soursop, real pulp, real flavor. This is the one."</p>
+        <div class="testi-author">Carmen L.</div>
+        <div class="testi-role">Verified Buyer</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <img src="logo.png" alt="SOPREME"
+             onerror="this.style.display='none'">
+      </div>
+      <div class="footer-tagline">The Supreme Superfruit™</div>
+      <p class="footer-desc">100% natural soursop products made for everyday wellness. One ingredient. Nothing added. Pure goodness from the jungle to you.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Shop</h4>
+      <a href="#">Soursop Juice (Can)</a>
+      <a href="#">Soursop Bitters</a>
+      <a href="#">Soursop Leaf Tea</a>
+      <a href="#">Variety Pack</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="#">About Us</a>
+      <a href="#">Wholesale</a>
+      <a href="#">Store Locator</a>
+      <a href="contact.html">Contact Us</a>
+    </div>
+    <div class="footer-col">
+      <h4>Join Club SOPREME</h4>
+      <p style="font-size:0.84rem;color:var(--w75);margin-bottom:12px;line-height:1.5">Get the latest news, deals, and drops!</p>
+      <div class="email-row">
+        <input type="email" placeholder="Enter your email" class="email-input">
+        <button class="email-btn">→</button>
+      </div>
+    </div>
+  </div>
+  <div class="footer-divider"></div>
+  <div class="footer-bottom">
+    <div class="footer-copy">Copyright © SOPREME™, LLC 2026</div>
+    <div class="footer-bl">
+      <a href="#">Shop All</a>
+      <a href="#">Terms</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Shipping</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const TOTAL_FRAMES = 145;
+const frames = new Array(TOTAL_FRAMES);
+let loadedCount = 0;
+
+/* ─── STARSCAPE ─── */
+(function () {
+  const c = document.getElementById('starscape');
+  const ctx = c.getContext('2d');
+  let stars = [];
+
+  function resize() {
+    c.width = window.innerWidth;
+    c.height = window.innerHeight;
+  }
+
+  function init() {
+    stars = Array.from({length: 180}, () => ({
+      x: Math.random() * c.width,
+      y: Math.random() * c.height,
+      r: Math.random() * 1.4 + 0.3,
+      op: Math.random() * 0.65 + 0.1,
+      ts: Math.random() * 0.018 + 0.004,
+      tp: Math.random() * Math.PI * 2,
+      dx: (Math.random() - 0.5) * 0.12,
+      dy: (Math.random() - 0.5) * 0.08,
+    }));
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, c.width, c.height);
+    stars.forEach(s => {
+      s.tp += s.ts; s.x += s.dx; s.y += s.dy;
+      if (s.x < 0) s.x = c.width;
+      if (s.x > c.width) s.x = 0;
+      if (s.y < 0) s.y = c.height;
+      if (s.y > c.height) s.y = 0;
+      const a = s.op * (0.4 + 0.6 * Math.sin(s.tp));
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,255,255,${a})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+
+  resize(); init(); draw();
+  window.addEventListener('resize', () => { resize(); init(); });
+})();
+
+/* ─── FRAME PRELOAD ─── */
+function preloadFrames() {
+  for (let i = 0; i < TOTAL_FRAMES; i++) {
+    const img = new Image();
+    const idx = i;
+    img.onload = img.onerror = function () {
+      loadedCount++;
+      const pct = Math.round(loadedCount / TOTAL_FRAMES * 100);
+      document.getElementById('loader-bar').style.width = pct + '%';
+      document.getElementById('loader-pct').textContent = pct + '%';
+      if (loadedCount === TOTAL_FRAMES) onAllLoaded();
+    };
+    img.src = 'frames/frame_' + String(i).padStart(4, '0') + '.jpg';
+    frames[i] = img;
+  }
+}
+
+function onAllLoaded() {
+  setTimeout(() => {
+    document.getElementById('loader').classList.add('hidden');
+    drawScrollFrame(0);
+  }, 350);
+}
+
+/* ─── SCROLL CANVAS ─── */
+const sc = document.getElementById('scroll-canvas');
+const sctx = sc.getContext('2d');
+let curFrame = -1;
+let rafPending = false;
+let pendingIdx = 0;
+
+function getVH() {
+  return window.visualViewport ? window.visualViewport.height : window.innerHeight;
+}
+
+function resizeSC() {
+  const dpr = window.devicePixelRatio || 1;
+  const vw = window.innerWidth;
+  const vh = getVH();
+  sc.width = vw * dpr;
+  sc.height = vh * dpr;
+  sc.style.width = vw + 'px';
+  sc.style.height = vh + 'px';
+  sctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  if (curFrame >= 0) drawScrollFrame(curFrame);
+}
+
+function drawScrollFrame(idx) {
+  if (idx === curFrame) return;
+  curFrame = idx;
+  const img = frames[idx];
+  if (!img || !img.complete || !img.naturalWidth) return;
+
+  const cw = window.innerWidth, ch = getVH();
+  const iw = img.naturalWidth, ih = img.naturalHeight;
+
+  sctx.clearRect(0, 0, cw, ch);
+  sctx.fillStyle = '#E8367A';
+  sctx.fillRect(0, 0, cw, ch);
+
+  const isMobile = cw < 768;
+  let scale, dw, dh, dx, dy;
+
+  if (isMobile) {
+    scale = Math.max(cw / iw, ch / ih) * 0.92;
+    dw = iw * scale; dh = ih * scale;
+    dx = (cw - dw) / 2; dy = (ch - dh) / 2;
+  } else {
+    scale = Math.max(cw / iw, ch / ih);
+    dw = iw * scale; dh = ih * scale;
+    dx = (cw - dw) / 2; dy = (ch - dh) / 2;
+  }
+  sctx.drawImage(img, dx, dy, dw, dh);
+}
+
+function scheduleDraw(idx) {
+  pendingIdx = idx;
+  if (!rafPending) {
+    rafPending = true;
+    requestAnimationFrame(() => { rafPending = false; drawScrollFrame(pendingIdx); });
+  }
+}
+
+/* ─── SCROLL PROGRESS + ANIMATION ─── */
+const SNAP_ZONE = 0.038;
+const HOLD_MS   = 580;
+let snapping = false;
+let snapTimer = null;
+const annoCards = document.querySelectorAll('.anno-card');
+
+function scrollProgress() {
+  const sec = document.getElementById('scroll-section');
+  const rect = sec.getBoundingClientRect();
+  const sh = sec.offsetHeight - window.innerHeight;
+  return Math.max(0, Math.min(1, -rect.top / sh));
+}
+
+let lastScrollY = -1;
+function onScrollUpdate() {
+  const sy = window.scrollY;
+  const total = document.documentElement.scrollHeight - window.innerHeight;
+  document.getElementById('scroll-progress').style.width = (sy / total * 100) + '%';
+  document.getElementById('navbar-outer').classList.toggle('pill', sy > 70);
+  document.getElementById('scroll-top-btn').classList.toggle('visible', sy > 400);
+
+  const p = scrollProgress();
+  const fi = Math.min(TOTAL_FRAMES - 1, Math.floor(p * TOTAL_FRAMES));
+  scheduleDraw(fi);
+
+  annoCards.forEach(card => {
+    const show = parseFloat(card.dataset.show);
+    const hide = parseFloat(card.dataset.hide);
+    card.classList.toggle('visible', p >= show && p < hide);
+  });
+
+  /* snap-stop */
+  if (!snapping) {
+    const snaps = [0.12, 0.34, 0.56, 0.78];
+    for (const sp of snaps) {
+      if (Math.abs(p - sp) < SNAP_ZONE) {
+        const sec = document.getElementById('scroll-section');
+        const sh = sec.offsetHeight - window.innerHeight;
+        const target = sec.offsetTop + sp * sh;
+        snapping = true;
+        window.scrollTo({top: target, behavior: 'smooth'});
+        clearTimeout(snapTimer);
+        snapTimer = setTimeout(() => { snapping = false; }, HOLD_MS);
+        break;
+      }
+    }
+  }
+}
+
+/* rAF loop for smooth iOS updates */
+(function rafScrollLoop() {
+  if (window.scrollY !== lastScrollY) {
+    lastScrollY = window.scrollY;
+    onScrollUpdate();
+  }
+  requestAnimationFrame(rafScrollLoop);
+})();
+
+window.addEventListener('scroll', () => {
+  lastScrollY = -1; /* force update on next rAF tick */
+}, {passive: true});
+
+/* ─── COUNT-UP ─── */
+function easeOutExpo(t) { return t === 1 ? 1 : 1 - Math.pow(2, -10 * t); }
+
+function countUp(el, target, suffix, dur, delay) {
+  setTimeout(() => {
+    const t0 = Date.now();
+    (function tick() {
+      const prog = Math.min((Date.now() - t0) / dur, 1);
+      const val  = Math.round(easeOutExpo(prog) * target);
+      el.textContent = val + suffix;
+      if (prog < 1) {
+        el.style.textShadow = `0 0 ${18 * (1-prog)}px var(--yellow)`;
+        requestAnimationFrame(tick);
+      } else {
+        el.style.textShadow = '';
+      }
+    })();
+  }, delay);
+}
+
+const specObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.querySelectorAll('.spec-number').forEach((el, i) => {
+      const tgt = parseInt(el.dataset.target);
+      const sfx = el.dataset.suffix || '';
+      countUp(el, tgt, sfx, 1400, i * 220);
+    });
+    specObs.unobserve(e.target);
+  });
+}, {threshold: 0.3});
+specObs.observe(document.getElementById('specs-grid'));
+
+/* ─── CONFETTI ─── */
+const cc = document.getElementById('confetti-canvas');
+const cctx = cc.getContext('2d');
+function resizeCC() { cc.width = window.innerWidth; cc.height = window.innerHeight; }
+resizeCC();
+window.addEventListener('resize', resizeCC);
+
+const CCOLORS = ['#F5C842','#E8367A','#FFFFFF','#FF6B9D','#FFD700','#AAFFD0','#FF9F43'];
+let cParticles = [];
+let cRunning = false;
+
+document.getElementById('cta-btn').addEventListener('click', function () {
+  const r = this.getBoundingClientRect();
+  const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+  for (let i = 0; i < 130; i++) {
+    cParticles.push({
+      x: cx, y: cy,
+      vx: (Math.random() - 0.5) * 17,
+      vy: (Math.random() - 0.75) * 15,
+      color: CCOLORS[Math.floor(Math.random() * CCOLORS.length)],
+      w: Math.random() * 11 + 4,
+      h: Math.random() * 6 + 3,
+      rot: Math.random() * 360,
+      rs: (Math.random() - 0.5) * 9,
+      g: 0.36, life: 1,
+      decay: Math.random() * 0.013 + 0.007,
+    });
+  }
+  if (!cRunning) { cRunning = true; rafConfetti(); }
+
+  // radial burst transition
+  const overlay = document.getElementById('page-transition');
+  const btnRect = this.getBoundingClientRect();
+  const tx = ((btnRect.left + btnRect.width / 2) / window.innerWidth * 100).toFixed(1) + '%';
+  const ty = ((btnRect.top  + btnRect.height / 2) / window.innerHeight * 100).toFixed(1) + '%';
+  overlay.style.setProperty('--tx', tx);
+  overlay.style.setProperty('--ty', ty);
+  overlay.classList.add('expand');
+  setTimeout(() => { window.location.href = 'shop.html'; }, 650);
+});
+
+function rafConfetti() {
+  cctx.clearRect(0, 0, cc.width, cc.height);
+  cParticles = cParticles.filter(p => p.life > 0);
+  cParticles.forEach(p => {
+    p.x += p.vx; p.y += p.vy; p.vy += p.g;
+    p.vx *= 0.992; p.rot += p.rs; p.life -= p.decay;
+    cctx.save();
+    cctx.globalAlpha = Math.max(0, p.life);
+    cctx.translate(p.x, p.y);
+    cctx.rotate(p.rot * Math.PI / 180);
+    cctx.fillStyle = p.color;
+    cctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+    cctx.restore();
+  });
+  if (cParticles.length) requestAnimationFrame(rafConfetti);
+  else { cRunning = false; cctx.clearRect(0, 0, cc.width, cc.height); }
+}
+
+/* ─── TESTIMONIALS DRAG ─── */
+(function () {
+  const wrap = document.getElementById('testi-scroll');
+  let dragging = false, startX = 0, sl = 0;
+  wrap.addEventListener('mousedown', e => { dragging = true; startX = e.pageX - wrap.offsetLeft; sl = wrap.scrollLeft; });
+  wrap.addEventListener('mouseleave', () => dragging = false);
+  wrap.addEventListener('mouseup', () => dragging = false);
+  wrap.addEventListener('mousemove', e => {
+    if (!dragging) return; e.preventDefault();
+    wrap.scrollLeft = sl - (e.pageX - wrap.offsetLeft - startX) * 1.4;
+  });
+  wrap.addEventListener('touchstart', e => { startX = e.touches[0].pageX; sl = wrap.scrollLeft; }, {passive:true});
+  wrap.addEventListener('touchmove', e => { wrap.scrollLeft = sl - (e.touches[0].pageX - startX); }, {passive:true});
+})();
+
+/* ─── SCROLL TO TOP ─── */
+document.getElementById('scroll-top-btn').addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+/* ─── INIT ─── */
+resizeSC();
+window.addEventListener('resize', resizeSC);
+if (window.visualViewport) window.visualViewport.addEventListener('resize', resizeSC);
+preloadFrames();
+</script>
+</body>
+</html>

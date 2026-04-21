@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop All — SOPREME™</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --pink:        #E8367A;
+      --pink-dark:   #C72F69;
+      --pink-deeper: #A82259;
+      --yellow:      #F5C842;
+      --white:       #FFFFFF;
+      --w75:  rgba(255,255,255,0.75);
+      --w50:  rgba(255,255,255,0.50);
+      --w20:  rgba(255,255,255,0.20);
+      --w12:  rgba(255,255,255,0.12);
+      --w08:  rgba(255,255,255,0.08);
+      --heading: 'Space Grotesk', sans-serif;
+      --body:    'Archivo', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: auto; }
+    body {
+      font-family: var(--body);
+      background: var(--pink);
+      color: var(--white);
+      overflow-x: hidden;
+    }
+    ::selection { background: var(--yellow); color: #1a1a1a; }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--pink-deeper); }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(var(--yellow), var(--pink-dark));
+      border-radius: 3px;
+    }
+
+    /* ─── SCROLL PROGRESS ─── */
+    #scroll-progress {
+      position: fixed; top: 0; left: 0;
+      height: 3px; width: 0%;
+      background: linear-gradient(90deg, var(--yellow), #FFA500, var(--yellow));
+      z-index: 1001;
+      box-shadow: 0 0 6px var(--yellow);
+    }
+
+    /* ─── ANNOUNCE BAR ─── */
+    .announce-bar {
+      background: var(--pink-dark);
+      padding: 8px 16px;
+      text-align: center;
+      font-size: 0.8rem; font-weight: 600; letter-spacing: 0.4px;
+      position: relative; z-index: 100;
+    }
+    .announce-bar a { color: var(--yellow); text-decoration: none; font-weight: 700; }
+
+    /* ─── NAVBAR ─── */
+    #navbar-outer {
+      position: sticky; top: 0; z-index: 500;
+      transition: padding 0.4s ease;
+    }
+    #navbar-outer.pill { padding: 8px 20px; }
+
+    #navbar {
+      height: 66px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--pink); padding: 0 40px;
+      transition: all 0.4s ease;
+    }
+    #navbar-outer.pill #navbar {
+      border-radius: 50px;
+      background: rgba(200,47,105,0.92);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--w20);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+      padding: 0 28px;
+    }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a {
+      color: var(--white); text-decoration: none;
+      font-size: 0.82rem; font-weight: 600;
+      letter-spacing: 1px; text-transform: uppercase;
+      opacity: 0.88; transition: opacity 0.2s, color 0.2s;
+    }
+    .nav-links a:hover { opacity: 1; color: var(--yellow); }
+    .nav-links a.active { color: var(--yellow); opacity: 1; }
+    .nav-logo {
+      text-decoration: none; display: flex; align-items: center; gap: 8px;
+    }
+    .nav-logo img {
+      height: 40px; width: auto;
+      filter: brightness(0) invert(1);
+    }
+    .nav-logo-fallback {
+      font-family: var(--heading); font-size: 1.5rem;
+      font-weight: 700; letter-spacing: 3px;
+      color: var(--white); display: none;
+    }
+    .nav-left-group { display: flex; flex: 1; }
+    .nav-right { display: flex; align-items: center; gap: 20px; flex: 1; justify-content: flex-end; }
+    .nav-shop-btn {
+      background: var(--yellow); color: #1a1a1a;
+      padding: 8px 22px; border-radius: 50px;
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .nav-shop-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(245,200,66,0.45);
+    }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-shop-btn { display: none; }
+      #navbar { padding: 0 20px; }
+    }
+
+    /* ─── PAGE HERO ─── */
+    .page-hero {
+      background: var(--pink-dark);
+      padding: 52px 40px 48px;
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .page-hero-grid {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .page-hero h1 {
+      font-family: var(--heading);
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700; color: var(--white);
+      letter-spacing: 1px; position: relative; z-index: 1;
+    }
+    .page-hero h1 span { color: var(--yellow); }
+    .page-hero p {
+      font-size: 1rem; color: var(--w75);
+      margin-top: 10px; position: relative; z-index: 1;
+    }
+
+    /* ─── FILTER BAR ─── */
+    .filter-bar {
+      background: var(--pink);
+      padding: 16px 40px;
+      display: flex; align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--w12);
+      gap: 16px; flex-wrap: wrap;
+    }
+    .filter-left {
+      display: flex; gap: 10px; flex-wrap: wrap;
+    }
+    .filter-pill {
+      padding: 7px 18px;
+      border-radius: 50px;
+      font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 0.5px; cursor: pointer;
+      transition: all 0.2s; border: 1.5px solid var(--w20);
+      background: transparent; color: var(--white);
+    }
+    .filter-pill:hover { border-color: var(--white); background: var(--w08); }
+    .filter-pill.active {
+      background: var(--yellow); color: #1a1a1a;
+      border-color: var(--yellow);
+    }
+    .filter-right {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.8rem; color: var(--w75);
+    }
+    .sort-select {
+      background: var(--w08); border: 1px solid var(--w20);
+      color: var(--white); font-family: var(--body);
+      font-size: 0.8rem; padding: 6px 12px;
+      border-radius: 8px; outline: none; cursor: pointer;
+    }
+    .sort-select option { background: var(--pink-dark); color: var(--white); }
+
+    @media (max-width: 640px) {
+      .filter-bar { padding: 12px 20px; }
+    }
+
+    /* ─── PRODUCT GRID ─── */
+    .shop-section {
+      padding: 40px 40px 80px;
+    }
+    .product-count {
+      font-size: 0.8rem; color: var(--w75);
+      margin-bottom: 28px; letter-spacing: 0.5px;
+    }
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    @media (max-width: 900px) { .product-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 560px) {
+      .product-grid { grid-template-columns: 1fr; }
+      .shop-section { padding: 24px 20px 64px; }
+    }
+
+    /* ─── PRODUCT CARD ─── */
+    .product-card {
+      background: #FFFFFF;
+      border-radius: 16px;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+    }
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 48px rgba(0,0,0,0.18);
+    }
+    .card-img-wrap {
+      position: relative;
+      background: #fff;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px;
+    }
+    .card-img-wrap img {
+      width: 100%; height: 100%;
+      object-fit: contain;
+      transition: transform 0.4s ease;
+    }
+    .product-card:hover .card-img-wrap img {
+      transform: scale(1.05);
+    }
+    .card-badge {
+      position: absolute; top: 12px; left: 12px;
+      background: var(--pink); color: var(--white);
+      font-size: 0.68rem; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase;
+      padding: 4px 10px; border-radius: 50px;
+    }
+    .card-badge.sold-out {
+      background: #aaa;
+    }
+    .card-badge.new {
+      background: var(--yellow); color: #1a1a1a;
+    }
+    .card-badge.best {
+      background: var(--pink-dark);
+    }
+
+    .card-body {
+      padding: 18px 20px 22px;
+    }
+    .card-title {
+      font-family: var(--heading);
+      font-size: 1.05rem; font-weight: 700;
+      color: #1a1a1a; margin-bottom: 4px;
+      line-height: 1.3;
+    }
+    .card-subtitle {
+      font-size: 0.8rem; color: #666;
+      margin-bottom: 14px; line-height: 1.4;
+    }
+    .card-price-row {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      gap: 12px; margin-bottom: 14px;
+    }
+    .card-price {
+      font-family: var(--heading);
+      font-size: 1.15rem; font-weight: 700;
+      color: var(--pink);
+    }
+    .card-price-per {
+      font-size: 0.73rem; color: #999; font-weight: 500;
+    }
+    .card-btn {
+      width: 100%; padding: 11px 16px;
+      border-radius: 50px; border: none;
+      font-family: var(--body);
+      font-size: 0.82rem; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .card-btn.add {
+      background: var(--pink); color: var(--white);
+    }
+    .card-btn.add:hover {
+      background: var(--pink-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(232,54,122,0.35);
+    }
+    .card-btn.sold {
+      background: #e0e0e0; color: #999;
+      cursor: not-allowed;
+    }
+
+    /* ─── BUNDLE BANNER ─── */
+    .bundle-banner {
+      margin: 0 40px 40px;
+      background: var(--pink-dark);
+      border-radius: 20px;
+      padding: 40px 48px;
+      display: flex; align-items: center;
+      justify-content: space-between; gap: 32px;
+      flex-wrap: wrap;
+      position: relative; overflow: hidden;
+      border: 1px solid var(--w20);
+    }
+    .bundle-orb {
+      position: absolute; border-radius: 50%;
+      filter: blur(70px); pointer-events: none;
+    }
+    .bundle-orb-1 {
+      width: 300px; height: 300px;
+      background: var(--yellow); opacity: 0.12;
+      right: -60px; top: -60px;
+    }
+    .bundle-orb-2 {
+      width: 200px; height: 200px;
+      background: var(--pink-deeper); opacity: 0.4;
+      left: -40px; bottom: -40px;
+    }
+    .bundle-text { position: relative; z-index: 1; }
+    .bundle-eyebrow {
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 4px; text-transform: uppercase;
+      color: var(--yellow); margin-bottom: 10px;
+    }
+    .bundle-title {
+      font-family: var(--heading);
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      font-weight: 700; color: var(--white);
+      margin-bottom: 8px;
+    }
+    .bundle-sub {
+      font-size: 0.9rem; color: var(--w75); line-height: 1.5;
+    }
+    .bundle-cta {
+      position: relative; z-index: 1;
+      background: var(--yellow); color: #1a1a1a;
+      padding: 14px 36px; border-radius: 50px;
+      font-size: 0.9rem; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase;
+      border: none; cursor: pointer; white-space: nowrap;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .bundle-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(245,200,66,0.4);
+    }
+
+    @media (max-width: 640px) {
+      .bundle-banner { margin: 0 20px 32px; padding: 28px 24px; }
+    }
+
+    /* ─── FOOTER ─── */
+    .footer {
+      background: var(--pink-deeper); padding: 64px 40px 28px;
+    }
+    .footer-top {
+      display: flex; justify-content: space-between;
+      align-items: flex-start; gap: 40px;
+      margin-bottom: 52px; flex-wrap: wrap;
+    }
+    .footer-brand { max-width: 280px; }
+    .footer-logo img {
+      height: 46px; width: auto;
+      filter: brightness(0) invert(1);
+      margin-bottom: 10px; display: block;
+    }
+    .footer-tagline {
+      font-size: 0.72rem; letter-spacing: 3px;
+      color: var(--yellow); text-transform: uppercase; margin-bottom: 14px;
+    }
+    .footer-desc { font-size: 0.84rem; color: var(--w75); line-height: 1.65; }
+    .footer-col h4 {
+      font-family: var(--heading); font-size: 0.72rem;
+      font-weight: 700; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--yellow); margin-bottom: 16px;
+    }
+    .footer-col a {
+      display: block; color: var(--w75); text-decoration: none;
+      font-size: 0.86rem; margin-bottom: 10px; transition: color 0.2s;
+    }
+    .footer-col a:hover { color: var(--white); }
+    .email-row { display: flex; margin-top: 6px; }
+    .email-input {
+      flex: 1; padding: 10px 16px;
+      background: var(--w08); border: 1px solid var(--w20);
+      border-right: none; border-radius: 8px 0 0 8px;
+      color: var(--white); font-family: var(--body); font-size: 0.84rem; outline: none;
+    }
+    .email-input::placeholder { color: var(--w50); }
+    .email-btn {
+      padding: 10px 20px; background: var(--yellow);
+      color: #1a1a1a; border: none; border-radius: 0 8px 8px 0;
+      font-weight: 700; font-size: 0.82rem; cursor: pointer; transition: background 0.2s;
+    }
+    .email-btn:hover { background: #FFD700; }
+    .footer-divider { height: 1px; background: var(--w08); margin-bottom: 22px; }
+    .footer-bottom {
+      display: flex; justify-content: space-between;
+      align-items: center; flex-wrap: wrap; gap: 12px;
+    }
+    .footer-copy { font-size: 0.78rem; color: var(--w50); }
+    .footer-bl { display: flex; gap: 20px; }
+    .footer-bl a {
+      font-size: 0.76rem; color: var(--w50); text-decoration: none; transition: color 0.2s;
+    }
+    .footer-bl a:hover { color: var(--white); }
+
+    @media (max-width: 480px) {
+      .footer { padding: 48px 20px 24px; }
+    }
+
+    /* ─── ENTRY TRANSITION ─── */
+    #page-entry {
+      position: fixed; inset: 0;
+      background: var(--yellow);
+      z-index: 99999; pointer-events: none;
+      animation: circleReveal 0.65s cubic-bezier(0.7, 0, 0.3, 1) 0.05s forwards;
+    }
+    @keyframes circleReveal {
+      from { clip-path: circle(150% at 50% 50%); }
+      to   { clip-path: circle(0% at 50% 50%); }
+    }
+  </style>
+</head>
+<body>
+
+<div id="scroll-progress"></div>
+<div id="page-entry"></div>
+
+<!-- ANNOUNCE BAR -->
+<div class="announce-bar">
+  🌿 Find Us @ <a href="#">Whole Foods</a>, Sprouts, HEB, Gelson's + <a href="#">Amazon!</a>
+</div>
+
+<!-- NAVBAR -->
+<div id="navbar-outer">
+  <nav id="navbar">
+    <div class="nav-left-group">
+      <ul class="nav-links">
+        <li><a href="index.html#scroll-section">About</a></li>
+        <li><a href="shop.html" class="active">Shop</a></li>
+      </ul>
+    </div>
+    <a href="index.html" class="nav-logo">
+      <img src="logo.png" alt="SOPREME"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span class="nav-logo-fallback">SOPREME™</span>
+    </a>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="#">Wholesale</a></li>
+        <li><a href="#">Find Us</a></li>
+      </ul>
+      <a href="shop.html" class="nav-shop-btn">Shop Now</a>
+    </div>
+  </nav>
+</div>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="page-hero-grid"></div>
+  <h1>Shop <span>All</span></h1>
+  <p>100% Pure. Nothing Added. The Supreme Superfruit™ in every form.</p>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <div class="filter-left">
+    <button class="filter-pill active" onclick="filterProducts('all', this)">All Products</button>
+    <button class="filter-pill" onclick="filterProducts('juice', this)">Juice</button>
+    <button class="filter-pill" onclick="filterProducts('bitters', this)">Bitters</button>
+    <button class="filter-pill" onclick="filterProducts('tea', this)">Tea</button>
+    <button class="filter-pill" onclick="filterProducts('bundle', this)">Bundles</button>
+  </div>
+  <div class="filter-right">
+    <span>Sort by</span>
+    <select class="sort-select" onchange="sortProducts(this.value)">
+      <option value="recommended">Recommended</option>
+      <option value="price-asc">Price: Low to High</option>
+      <option value="price-desc">Price: High to Low</option>
+    </select>
+  </div>
+</div>
+
+<!-- SHOP GRID -->
+<div class="shop-section">
+  <div class="product-count" id="product-count">6 products</div>
+  <div class="product-grid" id="product-grid">
+
+    <!-- Soursop Juice 4-Pack -->
+    <div class="product-card" data-category="juice" data-price="19.95">
+      <div class="card-img-wrap">
+        <span class="card-badge best">Best Seller</span>
+        <img src="products/juice-4pack.webp" alt="Soursop Juice 4-Pack"
+             onerror="this.src=''; this.parentElement.style.background='#fce4ef'">
+      </div>
+      <div class="card-body">
+        <div class="card-title">100% Pure Soursop Juice</div>
+        <div class="card-subtitle">4 Cans · 12 FL OZ each · With Pulp</div>
+        <div class="card-price-row">
+          <span class="card-price">$19.95</span>
+          <span class="card-price-per">$4.99 / can</span>
+        </div>
+        <button class="card-btn add">Add to Cart</button>
+      </div>
+    </div>
+
+    <!-- Soursop Bitters -->
+    <div class="product-card" data-category="bitters" data-price="24.95">
+      <div class="card-img-wrap">
+        <span class="card-badge new">New</span>
+        <img src="products/bitters.webp" alt="Soursop Bitters"
+             onerror="this.src=''; this.parentElement.style.background='#fce4ef'">
+      </div>
+      <div class="card-body">
+        <div class="card-title">100% Natural Soursop Bitters</div>
+        <div class="card-subtitle">Dietary Supplement · 16 FL OZ / 473 mL</div>
+        <div class="card-price-row">
+          <span class="card-price">$24.95</span>
+          <span class="card-price-per">Dietary Supplement</span>
+        </div>
+        <button class="card-btn add">Add to Cart</button>
+      </div>
+    </div>
+
+    <!-- Soursop Leaf Tea -->
+    <div class="product-card" data-category="tea" data-price="16.95">
+      <div class="card-img-wrap">
+        <img src="products/tea.webp" alt="Soursop Leaf Tea"
+             onerror="this.src=''; this.parentElement.style.background='#fce4ef'">
+      </div>
+      <div class="card-body">
+        <div class="card-title">100% Natural Soursop Leaf Tea</div>
+        <div class="card-subtitle">Herbal Tea · 15 Tea Bags · Tropical Lemon</div>
+        <div class="card-price-row">
+          <span class="card-price">$16.95</span>
+          <span class="card-price-per">$1.13 / bag</span>
+        </div>
+        <button class="card-btn add">Add to Cart</button>
+      </div>
+    </div>
+
+    <!-- Bitters + Tea Bundle -->
+    <div class="product-card" data-category="bundle" data-price="34.95">
+      <div class="card-img-wrap">
+        <span class="card-badge" style="background:var(--pink-dark)">Bundle</span>
+        <img src="products/chatgpt1.webp" alt="Bitters + Tea Bundle"
+             onerror="this.src=''; this.parentElement.style.background='#fce4ef'">
+      </div>
+      <div class="card-body">
+        <div class="card-title">Bitters + Tea Bundle</div>
+        <div class="card-subtitle">1 Bitters · 1 Leaf Tea · Save 15%</div>
+        <div class="card-price-row">
+          <span class="card-price">$34.95</span>
+          <span class="card-price-per">Save $6.95</span>
+        </div>
+        <button class="card-btn add">Add to Cart</button>
+      </div>
+    </div>
+
+    <!-- Double Bundle -->
+    <div class="product-card" data-category="bundle" data-price="59.95">
+      <div class="card-img-wrap">
+        <span class="card-badge" style="background:var(--pink-dark)">Bundle</span>
+        <img src="products/chatgpt2.webp" alt="Double Up Bundle"
+             onerror="this.src=''; this.parentElement.style.background='#fce4ef'">
+      </div>
+      <div class="card-body">
+        <div class="card-title">Double Up Bundle</div>
+        <div class="card-subtitle">2 Bitters · 3 Leaf Tea · Best Value</div>
+        <div class="card-price-row">
+          <span class="card-price">$59.95</span>
+          <span class="card-price-per">Save $20.80</span>
+        </div>
+        <button class="card-btn add">Add to Cart</button>
+      </div>
+    </div>
+
+    <!-- Complete Collection -->
+    <div class="product-card" data-category="bundle" data-price="74.95">
+      <div class="card-img-wrap">
+        <span class="card-badge" style="background:var(--pink-dark)">Bundle</span>
+        <img src="products/chatgpt3.webp" alt="Complete Collection"
+             onerror="this.src=''; this.parentElement.style.background='#fce4ef'">
+      </div>
+      <div class="card-body">
+        <div class="card-title">Complete Collection</div>
+        <div class="card-subtitle">Juice · Bitters · Tea · Everything SOPREME</div>
+        <div class="card-price-row">
+          <span class="card-price">$74.95</span>
+          <span class="card-price-per">Best Deal</span>
+        </div>
+        <button class="card-btn add">Add to Cart</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- BUNDLE BANNER -->
+<div class="bundle-banner">
+  <div class="bundle-orb bundle-orb-1"></div>
+  <div class="bundle-orb bundle-orb-2"></div>
+  <div class="bundle-text">
+    <div class="bundle-eyebrow">Wholesale Program</div>
+    <div class="bundle-title">Bring SOPREME™ to Your Store</div>
+    <div class="bundle-sub">50% off your first order · 1 year free shipping · 60-day payment terms for eligible retailers</div>
+  </div>
+  <button class="bundle-cta">Unlock Wholesale →</button>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <img src="logo.png" alt="SOPREME"
+             onerror="this.style.display='none'">
+      </div>
+      <div class="footer-tagline">The Supreme Superfruit™</div>
+      <p class="footer-desc">100% natural soursop products made for everyday wellness. One ingredient. Nothing added.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Shop</h4>
+      <a href="#">Soursop Juice (Can)</a>
+      <a href="#">Soursop Bitters</a>
+      <a href="#">Soursop Leaf Tea</a>
+      <a href="#">Bundles</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="index.html">Home</a>
+      <a href="#">About Us</a>
+      <a href="#">Wholesale</a>
+      <a href="contact.html">Contact Us</a>
+    </div>
+    <div class="footer-col">
+      <h4>Join Club SOPREME</h4>
+      <p style="font-size:0.84rem;color:var(--w75);margin-bottom:12px;line-height:1.5">Get the latest news, deals, and drops!</p>
+      <div class="email-row">
+        <input type="email" placeholder="Enter your email" class="email-input">
+        <button class="email-btn">→</button>
+      </div>
+    </div>
+  </div>
+  <div class="footer-divider"></div>
+  <div class="footer-bottom">
+    <div class="footer-copy">Copyright © SOPREME™, LLC 2026</div>
+    <div class="footer-bl">
+      <a href="#">Shop All</a>
+      <a href="#">Terms</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Shipping</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* scroll progress */
+window.addEventListener('scroll', () => {
+  const total = document.documentElement.scrollHeight - window.innerHeight;
+  document.getElementById('scroll-progress').style.width = (window.scrollY / total * 100) + '%';
+  document.getElementById('navbar-outer').classList.toggle('pill', window.scrollY > 60);
+}, {passive: true});
+
+/* filter */
+function filterProducts(cat, btn) {
+  document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  const cards = document.querySelectorAll('.product-card');
+  let visible = 0;
+  cards.forEach(card => {
+    const show = cat === 'all' || card.dataset.category === cat;
+    card.style.display = show ? '' : 'none';
+    if (show) visible++;
+  });
+  document.getElementById('product-count').textContent = visible + ' product' + (visible !== 1 ? 's' : '');
+}
+
+/* sort */
+function sortProducts(val) {
+  const grid = document.getElementById('product-grid');
+  const cards = Array.from(grid.querySelectorAll('.product-card'));
+  cards.sort((a, b) => {
+    const pa = parseFloat(a.dataset.price);
+    const pb = parseFloat(b.dataset.price);
+    if (val === 'price-asc') return pa - pb;
+    if (val === 'price-desc') return pb - pa;
+    return 0;
+  });
+  cards.forEach(c => grid.appendChild(c));
+}
+</script>
+</body>
+</html>
