@@ -270,6 +270,20 @@
     @media (max-width: 480px) {
       .hero-eyebrow { font-size: 0.65rem; letter-spacing: 2px; }
     }
+    .hero-visual-mobile {
+      display: none;
+    }
+    @media (max-width: 900px) {
+      .hero-visual-mobile {
+        display: block;
+        width: 100%; margin: 20px 0 8px;
+      }
+      .hero-visual-mobile img {
+        width: 100%; border-radius: 20px;
+        box-shadow: 0 16px 48px rgba(0,0,0,0.3), 0 0 40px rgba(245,200,66,0.12);
+      }
+      .hero-visual { display: none; }
+    }
     .hero-title {
       font-family: var(--heading);
       font-size: clamp(3rem, 7.5vw, 6rem);
@@ -839,6 +853,9 @@
     <div class="hero-content">
       <div class="hero-eyebrow">✦ &nbsp;Purely Natural. Zero Compromises. &nbsp;✦</div>
       <h1 class="hero-title">THE <em>SUPREME</em><br>SUPERFRUIT™</h1>
+      <div class="hero-visual-mobile">
+        <img src="products/hf_20260421_174940_302693e7-f170-4c43-a36d-2e4e0ae7cd31.png" alt="SOPREME full product lineup">
+      </div>
       <p class="hero-subtitle">100% Pure Soursop Juice.</p>
     <p class="hero-tagline">One Ingredient. Tons of Benefits.</p>
       <div class="hero-badges">
