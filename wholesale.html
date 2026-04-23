@@ -159,20 +159,26 @@
 
     /* ─── PERKS STRIP ─── */
     .perks-strip {
-      background: var(--green); padding: 14px 0;
-      overflow: hidden;
+      background: var(--green); padding: 12px 0;
+      overflow: hidden; position: relative;
     }
-    .perks-inner {
-      display: flex; justify-content: center; flex-wrap: wrap;
-      gap: 0 48px; max-width: 1100px; margin: 0 auto; padding: 0 24px;
+    .perks-track {
+      display: flex; width: max-content; white-space: nowrap;
+      animation: perksScroll 24s linear infinite;
     }
     .perk-item {
-      display: flex; align-items: center; gap: 10px;
+      display: inline-flex; align-items: center; gap: 10px;
       font-size: 0.82rem; font-weight: 700;
       letter-spacing: 1px; text-transform: uppercase;
-      color: #fff; padding: 6px 0;
+      color: #fff; padding: 0 36px;
+      flex-shrink: 0;
     }
-    .perk-item i { font-size: 1.1rem; }
+    .perk-item i { font-size: 1.1rem; flex-shrink: 0; }
+    .perk-sep { color: var(--yellow); font-size: 0.6rem; display: inline-flex; align-items: center; flex-shrink: 0; }
+    @keyframes perksScroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
 
     /* ─── WHY SECTION ─── */
     .why-section {
@@ -438,11 +444,15 @@
 
 <!-- PERKS STRIP -->
 <div class="perks-strip">
-  <div class="perks-inner">
-    <div class="perk-item"><i class="ph-bold ph-tag"></i> 50% Off First Order</div>
-    <div class="perk-item"><i class="ph-bold ph-truck"></i> 1 Year Free Shipping</div>
-    <div class="perk-item"><i class="ph-bold ph-calendar-blank"></i> 60-Day Payment Terms</div>
-    <div class="perk-item"><i class="ph-bold ph-headset"></i> Dedicated Support</div>
+  <div class="perks-track">
+    <span class="perk-item"><i class="ph-bold ph-tag"></i> 50% Off First Order</span><span class="perk-sep">&#9670;&#xFE0E;</span>
+    <span class="perk-item"><i class="ph-bold ph-truck"></i> 1 Year Free Shipping</span><span class="perk-sep">&#9670;&#xFE0E;</span>
+    <span class="perk-item"><i class="ph-bold ph-calendar-blank"></i> 60-Day Payment Terms</span><span class="perk-sep">&#9670;&#xFE0E;</span>
+    <span class="perk-item"><i class="ph-bold ph-headset"></i> Dedicated Support</span><span class="perk-sep">&#9670;&#xFE0E;</span>
+    <span class="perk-item"><i class="ph-bold ph-tag"></i> 50% Off First Order</span><span class="perk-sep">&#9670;&#xFE0E;</span>
+    <span class="perk-item"><i class="ph-bold ph-truck"></i> 1 Year Free Shipping</span><span class="perk-sep">&#9670;&#xFE0E;</span>
+    <span class="perk-item"><i class="ph-bold ph-calendar-blank"></i> 60-Day Payment Terms</span><span class="perk-sep">&#9670;&#xFE0E;</span>
+    <span class="perk-item"><i class="ph-bold ph-headset"></i> Dedicated Support</span><span class="perk-sep">&#9670;&#xFE0E;</span>
   </div>
 </div>
 
