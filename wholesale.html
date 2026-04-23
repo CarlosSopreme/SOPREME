@@ -322,7 +322,19 @@
     .form-note { text-align: center; font-size: 0.75rem; color: var(--w50); margin-top: 6px; }
     @media (max-width: 560px) {
       .form-row { grid-template-columns: 1fr; }
-      .apply-section { padding: 64px 20px; }
+      .apply-section { padding: 56px 20px; }
+      .apply-inner { padding: 0; }
+      .apply-sub { font-size: 0.88rem; margin-bottom: 32px; }
+      .form-input, .form-select, .form-textarea {
+        font-size: 1rem;
+        padding: 14px 14px;
+      }
+      .form-submit {
+        font-size: 0.88rem;
+        padding: 15px;
+        letter-spacing: 1px;
+      }
+      .apply-inner .section-title { font-size: clamp(1.7rem, 7vw, 2.4rem); }
     }
 
     /* ─── FOOTER ─── */
