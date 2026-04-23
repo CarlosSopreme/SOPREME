@@ -1000,7 +1000,8 @@
 </footer>
 
 <script>
-history.scrollRestoration = 'manual';
+if (history.scrollRestoration) history.scrollRestoration = 'manual';
+if (window.location.hash) history.replaceState(null, '', window.location.pathname);
 window.scrollTo(0, 0);
 
 /* ─── STARSCAPE ─── */
