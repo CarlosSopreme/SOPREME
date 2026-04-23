@@ -606,17 +606,19 @@
     .testi-section .section-title { margin-bottom: 40px; }
 
     .testi-scroll {
-      overflow-x: auto; overflow-y: hidden;
-      cursor: grab; -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
+      overflow: hidden;
     }
-    .testi-scroll::-webkit-scrollbar { display: none; }
-    .testi-scroll:active { cursor: grabbing; }
 
     .testi-track {
       display: flex; gap: 20px;
-      padding-right: 40px; width: max-content;
-      user-select: none;
+      width: max-content;
+      animation: testiScroll 32s linear infinite;
+    }
+    .testi-track:hover { animation-play-state: paused; }
+
+    @keyframes testiScroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
     }
 
     .testi-card {
@@ -949,6 +951,37 @@
         <div class="testi-author">Carmen L.</div>
         <div class="testi-role">Verified Buyer</div>
       </div>
+      <!-- duplicates for seamless loop -->
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"I've been drinking SOPREME every morning for 3 months and my digestion has never felt better. The flavor is incredible — tropical and refreshing. My whole family is hooked."</p>
+        <div class="testi-author">Maria T.</div>
+        <div class="testi-role">Verified Buyer</div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Finally a juice with ONE ingredient. I read every single label and SOPREME is the only soursop juice I trust. Pure, clean, and absolutely delicious. Nothing hidden."</p>
+        <div class="testi-author">James K.</div>
+        <div class="testi-role">Verified Buyer</div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"My kids call it their 'green heart juice' because of the soursop on the can. It's become our daily ritual. Knowing it's 100% pure with nothing added makes me feel great as a parent."</p>
+        <div class="testi-author">Ashley R.</div>
+        <div class="testi-role">Verified Buyer</div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"I'm a personal trainer and I recommend SOPREME to all my clients. The potassium content is impressive and the natural electrolytes are real. This is actual food, not a supplement."</p>
+        <div class="testi-author">David M.</div>
+        <div class="testi-role">Verified Buyer</div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"I've tried every soursop product out there and nothing comes close to SOPREME. You can taste the difference immediately. Real soursop, real pulp, real flavor. This is the one."</p>
+        <div class="testi-author">Carmen L.</div>
+        <div class="testi-role">Verified Buyer</div>
+      </div>
     </div>
   </div>
 </section>
@@ -1168,19 +1201,15 @@ function rafConfetti() {
   else { cRunning = false; cctx.clearRect(0, 0, cc.width, cc.height); }
 }
 
-/* ─── TESTIMONIALS DRAG ─── */
+/* ─── TESTIMONIALS — pause on touch ─── */
 (function () {
-  const wrap = document.getElementById('testi-scroll');
-  let dragging = false, startX = 0, sl = 0;
-  wrap.addEventListener('mousedown', e => { dragging = true; startX = e.pageX - wrap.offsetLeft; sl = wrap.scrollLeft; });
-  wrap.addEventListener('mouseleave', () => dragging = false);
-  wrap.addEventListener('mouseup', () => dragging = false);
-  wrap.addEventListener('mousemove', e => {
-    if (!dragging) return; e.preventDefault();
-    wrap.scrollLeft = sl - (e.pageX - wrap.offsetLeft - startX) * 1.4;
-  });
-  wrap.addEventListener('touchstart', e => { startX = e.touches[0].pageX; sl = wrap.scrollLeft; }, {passive:true});
-  wrap.addEventListener('touchmove', e => { wrap.scrollLeft = sl - (e.touches[0].pageX - startX); }, {passive:true});
+  const track = document.getElementById('testi-track');
+  document.getElementById('testi-scroll').addEventListener('touchstart', () => {
+    track.style.animationPlayState = 'paused';
+  }, {passive: true});
+  document.getElementById('testi-scroll').addEventListener('touchend', () => {
+    track.style.animationPlayState = 'running';
+  }, {passive: true});
 })();
 
 /* ─── SCROLL TO TOP ─── */
