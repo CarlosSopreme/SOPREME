@@ -203,15 +203,24 @@
     }
     .why-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.15); }
     .why-icon {
-      width: 56px; height: 56px; border-radius: 50%;
-      background: rgba(143,198,70,0.2); border: 2px solid var(--green);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.5rem; color: var(--green); margin-bottom: 20px;
+      width: 150px; height: 150px;
+      background-image: url('products/wholesale-icons.png');
+      background-size: 300% 200%;
+      background-repeat: no-repeat;
+      margin: 0 auto 22px;
     }
+    .icon-1 { background-position: 0%   0%;   }
+    .icon-2 { background-position: 50%  0%;   }
+    .icon-3 { background-position: 100% 0%;   }
+    .icon-4 { background-position: 0%   100%; }
+    .icon-5 { background-position: 50%  100%; }
+    .icon-6 { background-position: 100% 100%; }
     .why-card h3 {
-      font-family: var(--heading); font-size: 1.1rem; font-weight: 700;
+      font-family: var(--heading); font-size: 1.05rem; font-weight: 800;
       margin-bottom: 10px; color: var(--white);
+      text-transform: uppercase; line-height: 1.25; letter-spacing: 0.5px;
     }
+    .why-card h3 .yellow { color: var(--yellow); display: block; }
     .why-card p { font-size: 0.88rem; color: var(--w75); line-height: 1.65; }
     @media (max-width: 860px) { .why-grid { grid-template-columns: 1fr 1fr; } }
     @media (max-width: 560px) { .why-grid { grid-template-columns: 1fr; } }
@@ -425,33 +434,33 @@
   </div>
   <div class="why-grid">
     <div class="why-card">
-      <div class="why-icon"><i class="ph-bold ph-trend-up"></i></div>
-      <h3>High Repeat Purchase Rate</h3>
+      <div class="why-icon icon-1"></div>
+      <h3>High Repeat <span class="yellow">Purchase Rate</span></h3>
       <p>Soursop is a daily wellness ritual for our customers. Once they try it, they reorder consistently — driving predictable revenue for your store.</p>
     </div>
     <div class="why-card">
-      <div class="why-icon"><i class="ph-bold ph-seal-check"></i></div>
-      <h3>100% Clean Label</h3>
+      <div class="why-icon icon-2"></div>
+      <h3>100% <span class="yellow">Clean Label</span></h3>
       <p>One ingredient. No additives, no fillers, no compromises. SOPREME is the only soursop brand your health-conscious shoppers can trust completely.</p>
     </div>
     <div class="why-card">
-      <div class="why-icon"><i class="ph-bold ph-storefront"></i></div>
-      <h3>Already in Major Retailers</h3>
+      <div class="why-icon icon-3"></div>
+      <h3>Already in <span class="yellow">Major Retailers</span></h3>
       <p>Found at Whole Foods, Sprouts, HEB, and Gelson's. Your customers already know the brand — they're looking for it on your shelves too.</p>
     </div>
     <div class="why-card">
-      <div class="why-icon"><i class="ph-bold ph-leaf"></i></div>
-      <h3>Non-GMO & Kosher Certified</h3>
+      <div class="why-icon icon-4"></div>
+      <h3>Non-GMO & <span class="yellow">Kosher Certified</span></h3>
       <p>Meets the highest standards for natural food retailers. Ready to sell on day one with certifications your buyers require.</p>
     </div>
     <div class="why-card">
-      <div class="why-icon"><i class="ph-bold ph-chart-bar"></i></div>
-      <h3>Strong Sell-Through Rate</h3>
+      <div class="why-icon icon-5"></div>
+      <h3>Strong <span class="yellow">Sell-Through Rate</span></h3>
       <p>Eye-catching packaging and strong brand identity drive impulse purchases. SOPREME doesn't sit on shelves — it moves.</p>
     </div>
     <div class="why-card">
-      <div class="why-icon"><i class="ph-bold ph-handshake"></i></div>
-      <h3>Flexible Terms for Partners</h3>
+      <div class="why-icon icon-6"></div>
+      <h3>Flexible Terms <span class="yellow">for Partners</span></h3>
       <p>We grow when you grow. From net-60 payment terms to free shipping on first-year orders, we set you up for success from the start.</p>
     </div>
   </div>
