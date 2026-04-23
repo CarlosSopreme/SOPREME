@@ -94,7 +94,7 @@
     #scroll-progress {
       position: fixed; top: 0; left: 0;
       height: 3px; width: 0%;
-      background: linear-gradient(90deg, var(--green), var(--yellow), var(--green));
+      background: var(--green);
       z-index: 1001;
       box-shadow: 0 0 6px var(--yellow);
       transition: width 0.08s linear;
@@ -336,15 +336,15 @@
       box-shadow: 0 8px 32px rgba(245,200,66,0.55);
     }
     .btn-secondary {
-      background: transparent; color: var(--white);
+      background: transparent; color: var(--green);
       padding: 14px 38px; border-radius: 50px;
       font-size: 0.95rem; font-weight: 600;
       letter-spacing: 1.5px; text-transform: uppercase;
-      border: 2px solid var(--w50); cursor: pointer;
+      border: 2px solid var(--green); cursor: pointer;
       text-decoration: none;
       transition: all 0.2s;
     }
-    .btn-secondary:hover { border-color: var(--white); background: var(--w08); }
+    .btn-secondary:hover { background: rgba(143,198,70,0.15); border-color: var(--green); }
 
     .scroll-hint {
       position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
@@ -366,7 +366,7 @@
 
     /* ─── MARQUEE ─── */
     .marquee-section {
-      background: var(--yellow); padding: 12px 0;
+      background: var(--green); padding: 12px 0;
       overflow: hidden; position: relative; z-index: 1;
     }
     .marquee-track {
@@ -378,10 +378,10 @@
       display: inline-flex; align-items: center;
       font-size: 0.82rem; font-weight: 700;
       letter-spacing: 3px; text-transform: uppercase;
-      color: #1a1a1a; padding: 0 28px;
+      color: #fff; padding: 0 28px;
     }
     .marquee-sep {
-      color: var(--pink); font-size: 0.6rem;
+      color: var(--yellow); font-size: 0.6rem;
       display: inline-flex; align-items: center;
       flex-shrink: 0;
     }
@@ -419,10 +419,10 @@
     .meet-icon {
       width: 54px; height: 54px; flex-shrink: 0;
       border-radius: 50%;
-      background: rgba(255,255,255,0.12);
-      border: 2px solid rgba(255,255,255,0.25);
+      background: rgba(143,198,70,0.25);
+      border: 2px solid var(--green);
       display: flex; align-items: center; justify-content: center;
-      font-size: 1.4rem; color: var(--white);
+      font-size: 1.4rem; color: var(--green);
     }
     .meet-features li span {
       font-family: var(--heading);
