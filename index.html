@@ -612,13 +612,7 @@
     .testi-track {
       display: flex; gap: 20px;
       width: max-content;
-      animation: testiScroll 32s linear infinite;
-    }
-    .testi-track:hover { animation-play-state: paused; }
-
-    @keyframes testiScroll {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-50%); }
+      will-change: transform;
     }
 
     .testi-card {
@@ -1201,15 +1195,31 @@ function rafConfetti() {
   else { cRunning = false; cctx.clearRect(0, 0, cc.width, cc.height); }
 }
 
-/* ─── TESTIMONIALS — pause on touch ─── */
+/* ─── TESTIMONIALS AUTO-SCROLL ─── */
 (function () {
-  const track = document.getElementById('testi-track');
-  document.getElementById('testi-scroll').addEventListener('touchstart', () => {
-    track.style.animationPlayState = 'paused';
-  }, {passive: true});
-  document.getElementById('testi-scroll').addEventListener('touchend', () => {
-    track.style.animationPlayState = 'running';
-  }, {passive: true});
+  const scroll = document.getElementById('testi-scroll');
+  const track  = document.getElementById('testi-track');
+  const cards  = track.querySelectorAll('.testi-card');
+  const half   = cards.length / 2;
+  let pos = 0, paused = false, setWidth = 0;
+
+  window.addEventListener('load', function () {
+    for (let i = 0; i < half; i++) setWidth += cards[i].getBoundingClientRect().width + 20;
+
+    scroll.addEventListener('mouseenter', () => paused = true);
+    scroll.addEventListener('mouseleave', () => paused = false);
+    scroll.addEventListener('touchstart',  () => paused = true,  {passive: true});
+    scroll.addEventListener('touchend',    () => paused = false, {passive: true});
+
+    (function tick() {
+      if (!paused) {
+        pos += 0.5;
+        if (pos >= setWidth) pos -= setWidth;
+        track.style.transform = 'translateX(-' + pos + 'px)';
+      }
+      requestAnimationFrame(tick);
+    })();
+  });
 })();
 
 /* ─── SCROLL TO TOP ─── */
