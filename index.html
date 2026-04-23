@@ -468,8 +468,9 @@
     .specs-left .section-label { text-align: left; }
     .specs-left .section-title { text-align: left; margin-bottom: 40px; }
     @media (max-width: 860px) {
-      .specs-inner { grid-template-columns: 1fr; gap: 48px; }
-      .specs-right { display: none; }
+      .specs-inner { grid-template-columns: 1fr; gap: 40px; }
+      .specs-right { display: block; }
+      .specs-right img { min-height: 260px; border-radius: 16px; }
       .specs-left .section-label,
       .specs-left .section-title { text-align: center; }
     }
