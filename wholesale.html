@@ -274,18 +274,46 @@
       background: var(--pink-dark); padding: 88px 40px; text-align: center;
     }
     .qualify-grid {
-      display: flex; flex-wrap: wrap; justify-content: center;
-      gap: 14px; max-width: 800px; margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px; max-width: 900px; margin: 0 auto;
+      border: 1px solid var(--w12); border-radius: 20px; overflow: hidden;
     }
-    .qualify-pill {
-      display: flex; align-items: center; gap: 8px;
-      background: var(--w08); border: 1px solid var(--w20);
-      border-radius: 50px; padding: 12px 22px;
-      font-size: 0.85rem; font-weight: 600; letter-spacing: 0.5px;
-      transition: all 0.2s;
+    .qualify-item {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 14px; padding: 32px 20px;
+      background: var(--w08);
+      border-right: 1px solid var(--w12);
+      border-bottom: 1px solid var(--w12);
+      transition: background 0.25s;
     }
-    .qualify-pill:hover { background: rgba(143,198,70,0.15); border-color: var(--green); }
-    .qualify-pill i { color: var(--green); font-size: 1.1rem; }
+    .qualify-item:hover { background: rgba(143,198,70,0.1); }
+    .qualify-item:nth-child(4n) { border-right: none; }
+    .qualify-item:nth-last-child(-n+4) { border-bottom: none; }
+    .qualify-icon-wrap {
+      width: 52px; height: 52px; border-radius: 50%;
+      background: rgba(143,198,70,0.15);
+      border: 1px solid rgba(143,198,70,0.35);
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.25s, border-color 0.25s;
+    }
+    .qualify-item:hover .qualify-icon-wrap {
+      background: rgba(143,198,70,0.25);
+      border-color: var(--green);
+    }
+    .qualify-icon-wrap i { font-size: 1.4rem; color: var(--green); }
+    .qualify-item span {
+      font-size: 0.78rem; font-weight: 700;
+      letter-spacing: 0.5px; text-transform: uppercase;
+      color: var(--w75); line-height: 1.4; text-align: center;
+    }
+    @media (max-width: 640px) {
+      .qualify-grid { grid-template-columns: repeat(2, 1fr); }
+      .qualify-item:nth-child(4n) { border-right: 1px solid var(--w12); }
+      .qualify-item:nth-child(2n) { border-right: none; }
+      .qualify-item:nth-last-child(-n+4) { border-bottom: 1px solid var(--w12); }
+      .qualify-item:nth-last-child(-n+2) { border-bottom: none; }
+    }
 
     /* ─── APPLICATION FORM ─── */
     .apply-section {
@@ -538,14 +566,14 @@
   <div class="section-label">Who Can Apply</div>
   <h2 class="section-title" style="margin-bottom:40px;">We Partner With All<br>Types of Retailers</h2>
   <div class="qualify-grid">
-    <div class="qualify-pill"><i class="ph-bold ph-storefront"></i> Grocery Stores</div>
-    <div class="qualify-pill"><i class="ph-bold ph-leaf"></i> Health Food Stores</div>
-    <div class="qualify-pill"><i class="ph-bold ph-drop"></i> Juice Bars</div>
-    <div class="qualify-pill"><i class="ph-bold ph-barbell"></i> Gyms & Fitness Centers</div>
-    <div class="qualify-pill"><i class="ph-bold ph-first-aid"></i> Wellness Shops</div>
-    <div class="qualify-pill"><i class="ph-bold ph-coffee"></i> Cafés & Smoothie Shops</div>
-    <div class="qualify-pill"><i class="ph-bold ph-globe"></i> Online Retailers</div>
-    <div class="qualify-pill"><i class="ph-bold ph-hospital"></i> Natural Pharmacies</div>
+    <div class="qualify-item"><div class="qualify-icon-wrap"><i class="ph-bold ph-storefront"></i></div><span>Grocery Stores</span></div>
+    <div class="qualify-item"><div class="qualify-icon-wrap"><i class="ph-bold ph-leaf"></i></div><span>Health Food Stores</span></div>
+    <div class="qualify-item"><div class="qualify-icon-wrap"><i class="ph-bold ph-drop"></i></div><span>Juice Bars</span></div>
+    <div class="qualify-item"><div class="qualify-icon-wrap"><i class="ph-bold ph-barbell"></i></div><span>Gyms & Fitness</span></div>
+    <div class="qualify-item"><div class="qualify-icon-wrap"><i class="ph-bold ph-first-aid"></i></div><span>Wellness Shops</span></div>
+    <div class="qualify-item"><div class="qualify-icon-wrap"><i class="ph-bold ph-coffee"></i></div><span>Cafés & Smoothie Shops</span></div>
+    <div class="qualify-item"><div class="qualify-icon-wrap"><i class="ph-bold ph-globe"></i></div><span>Online Retailers</span></div>
+    <div class="qualify-item"><div class="qualify-icon-wrap"><i class="ph-bold ph-hospital"></i></div><span>Natural Pharmacies</span></div>
   </div>
 </section>
 
