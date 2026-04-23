@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wholesale — SOPREME™</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+  <style>
+    :root {
+      --pink:        #ee698d;
+      --pink-dark:   #d4527a;
+      --pink-deeper: #b83d64;
+      --yellow:      #F5C842;
+      --green:       #8fc646;
+      --green-dark:  #6da334;
+      --white:       #FFFFFF;
+      --w75:  rgba(255,255,255,0.75);
+      --w50:  rgba(255,255,255,0.50);
+      --w20:  rgba(255,255,255,0.20);
+      --w12:  rgba(255,255,255,0.12);
+      --w08:  rgba(255,255,255,0.08);
+      --heading: 'Space Grotesk', sans-serif;
+      --body:    'Archivo', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--body); background: var(--pink); color: var(--white); overflow-x: hidden; }
+    ::selection { background: var(--yellow); color: #1a1a1a; }
+    ::-webkit-scrollbar { display: none; }
+    html { scrollbar-width: none; }
+
+    /* ─── SCROLL PROGRESS ─── */
+    #scroll-progress {
+      position: fixed; top: 0; left: 0;
+      height: 3px; width: 0%;
+      background: var(--green);
+      z-index: 1001; box-shadow: 0 0 6px var(--green);
+    }
+
+    /* ─── NAVBAR ─── */
+    #navbar-outer {
+      position: sticky; top: 0; z-index: 500;
+      transition: padding 0.4s ease;
+    }
+    #navbar-outer.pill { padding: 8px 20px; }
+    #navbar {
+      height: 66px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--pink); padding: 0 40px;
+      transition: all 0.4s ease;
+    }
+    #navbar-outer.pill #navbar {
+      border-radius: 50px;
+      background: rgba(212,82,122,0.92);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--w20);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+      padding: 0 28px;
+    }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a {
+      color: var(--white); text-decoration: none;
+      font-size: 0.82rem; font-weight: 600;
+      letter-spacing: 1px; text-transform: uppercase;
+      opacity: 0.88; transition: opacity 0.2s, color 0.2s;
+    }
+    .nav-links a:hover { opacity: 1; color: var(--yellow); }
+    .nav-links a.active { color: var(--yellow); opacity: 1; }
+    .nav-logo {
+      text-decoration: none; display: flex; align-items: center; gap: 8px;
+      position: absolute; left: 50%; transform: translateX(-50%);
+    }
+    .nav-logo img { height: 48px; width: auto; filter: brightness(0) invert(1); }
+    .nav-logo-fallback {
+      font-family: var(--heading); font-size: 1.75rem;
+      font-weight: 700; letter-spacing: 3px; color: var(--white); display: none;
+    }
+    .nav-left-group { display: flex; flex: 1; }
+    .nav-right { display: flex; align-items: center; gap: 20px; flex: 1; justify-content: flex-end; }
+    .nav-shop-btn {
+      background: var(--yellow); color: #1a1a1a;
+      padding: 8px 22px; border-radius: 50px;
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .nav-shop-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(245,200,66,0.45); }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-shop-btn { display: none; }
+      #navbar { padding: 0 20px; }
+    }
+
+    /* ─── PAGE HERO ─── */
+    .page-hero {
+      background: var(--pink-dark);
+      padding: 80px 40px 72px;
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .page-hero-grid {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 44px 44px;
+    }
+    .hero-orb {
+      position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none;
+    }
+    .hero-orb-1 { width: 400px; height: 400px; background: var(--green); opacity: 0.15; top: -100px; right: -80px; }
+    .hero-orb-2 { width: 300px; height: 300px; background: var(--yellow); opacity: 0.1; bottom: -80px; left: -60px; }
+    .page-hero-eyebrow {
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 4px;
+      text-transform: uppercase; color: var(--green);
+      margin-bottom: 16px; position: relative; z-index: 1;
+    }
+    .page-hero h1 {
+      font-family: var(--heading);
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      font-weight: 700; color: var(--white);
+      line-height: 1.05; position: relative; z-index: 1;
+      margin-bottom: 18px;
+    }
+    .page-hero h1 span { color: var(--yellow); }
+    .page-hero p {
+      font-size: 1.05rem; color: var(--w75); max-width: 560px;
+      margin: 0 auto 36px; line-height: 1.65;
+      position: relative; z-index: 1;
+    }
+    .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; position: relative; z-index: 1; }
+
+    /* ─── BUTTONS ─── */
+    .btn-primary {
+      background: var(--yellow); color: #1a1a1a;
+      padding: 14px 38px; border-radius: 50px;
+      font-size: 0.95rem; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      border: none; cursor: pointer; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 8px;
+      box-shadow: 0 4px 20px rgba(245,200,66,0.35);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(245,200,66,0.55); }
+    .btn-outline {
+      background: transparent; color: var(--white);
+      padding: 14px 38px; border-radius: 50px;
+      font-size: 0.95rem; font-weight: 600;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      border: 2px solid var(--w50); cursor: pointer; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 8px;
+      transition: all 0.2s;
+    }
+    .btn-outline:hover { border-color: var(--white); background: var(--w08); }
+
+    /* ─── PERKS STRIP ─── */
+    .perks-strip {
+      background: var(--green); padding: 14px 0;
+      overflow: hidden;
+    }
+    .perks-inner {
+      display: flex; justify-content: center; flex-wrap: wrap;
+      gap: 0 48px; max-width: 1100px; margin: 0 auto; padding: 0 24px;
+    }
+    .perk-item {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 0.82rem; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase;
+      color: #fff; padding: 6px 0;
+    }
+    .perk-item i { font-size: 1.1rem; }
+
+    /* ─── WHY SECTION ─── */
+    .why-section {
+      padding: 88px 40px;
+      background: var(--pink);
+    }
+    .section-label {
+      display: inline-block; font-size: 0.82rem; font-weight: 800;
+      letter-spacing: 4px; text-transform: uppercase; color: #fff;
+      background: var(--green); padding: 7px 22px; border-radius: 50px;
+      margin-bottom: 18px;
+      box-shadow: 0 0 12px rgba(143,198,70,0.5), 0 0 28px rgba(143,198,70,0.3);
+    }
+    .section-title {
+      font-family: var(--heading);
+      font-size: clamp(2rem, 4.5vw, 3.2rem);
+      font-weight: 700; color: var(--white); margin-bottom: 56px;
+      text-shadow: 0 0 20px rgba(245,200,66,0.3);
+    }
+    .why-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 24px; max-width: 1100px; margin: 0 auto;
+    }
+    .why-card {
+      background: var(--w08); border: 1px solid var(--w12);
+      border-radius: 20px; padding: 36px 28px;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .why-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.15); }
+    .why-icon {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: rgba(143,198,70,0.2); border: 2px solid var(--green);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; color: var(--green); margin-bottom: 20px;
+    }
+    .why-card h3 {
+      font-family: var(--heading); font-size: 1.1rem; font-weight: 700;
+      margin-bottom: 10px; color: var(--white);
+    }
+    .why-card p { font-size: 0.88rem; color: var(--w75); line-height: 1.65; }
+    @media (max-width: 860px) { .why-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 560px) { .why-grid { grid-template-columns: 1fr; } }
+
+    /* ─── PROGRAM DETAILS ─── */
+    .program-section {
+      background: var(--pink-deeper); padding: 88px 40px;
+    }
+    .program-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 64px; align-items: center;
+    }
+    .program-left .section-label,
+    .program-left .section-title { text-align: left; }
+    .program-left .section-title { margin-bottom: 32px; }
+    .program-list {
+      list-style: none; display: flex; flex-direction: column; gap: 18px;
+      margin-bottom: 40px;
+    }
+    .program-list li {
+      display: flex; align-items: flex-start; gap: 14px;
+      font-size: 0.92rem; color: var(--w75); line-height: 1.6;
+    }
+    .program-list li i { color: var(--green); font-size: 1.2rem; flex-shrink: 0; margin-top: 2px; }
+    .program-right {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    }
+    .stat-card {
+      background: var(--w08); border: 1px solid var(--w20);
+      border-radius: 20px; padding: 32px 20px; text-align: center;
+    }
+    .stat-number {
+      font-family: var(--heading); font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 700; color: var(--yellow); line-height: 1; margin-bottom: 8px;
+    }
+    .stat-label { font-size: 0.77rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--w75); }
+    @media (max-width: 860px) {
+      .program-inner { grid-template-columns: 1fr; gap: 40px; }
+      .program-left .section-label, .program-left .section-title { text-align: center; }
+    }
+
+    /* ─── WHO QUALIFIES ─── */
+    .qualify-section {
+      background: var(--pink-dark); padding: 88px 40px; text-align: center;
+    }
+    .qualify-grid {
+      display: flex; flex-wrap: wrap; justify-content: center;
+      gap: 14px; max-width: 800px; margin: 0 auto;
+    }
+    .qualify-pill {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--w08); border: 1px solid var(--w20);
+      border-radius: 50px; padding: 12px 22px;
+      font-size: 0.85rem; font-weight: 600; letter-spacing: 0.5px;
+      transition: all 0.2s;
+    }
+    .qualify-pill:hover { background: rgba(143,198,70,0.15); border-color: var(--green); }
+    .qualify-pill i { color: var(--green); font-size: 1.1rem; }
+
+    /* ─── APPLICATION FORM ─── */
+    .apply-section {
+      background: var(--pink); padding: 88px 40px;
+    }
+    .apply-inner {
+      max-width: 680px; margin: 0 auto; text-align: center;
+    }
+    .apply-inner .section-title { margin-bottom: 10px; }
+    .apply-sub { font-size: 0.95rem; color: var(--w75); margin-bottom: 48px; line-height: 1.6; }
+    .apply-form { display: flex; flex-direction: column; gap: 16px; text-align: left; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label {
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; color: var(--w75);
+    }
+    .form-input, .form-select, .form-textarea {
+      padding: 13px 16px;
+      background: var(--w08); border: 1px solid var(--w20);
+      border-radius: 10px; color: var(--white);
+      font-family: var(--body); font-size: 0.9rem;
+      outline: none; transition: border-color 0.2s;
+      width: 100%;
+    }
+    .form-input::placeholder, .form-textarea::placeholder { color: var(--w50); }
+    .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--green); }
+    .form-select { cursor: pointer; }
+    .form-select option { background: var(--pink-deeper); color: var(--white); }
+    .form-textarea { resize: vertical; min-height: 110px; }
+    .form-submit {
+      background: var(--yellow); color: #1a1a1a;
+      padding: 15px; border-radius: 50px; border: none;
+      font-family: var(--body); font-size: 0.95rem; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+      margin-top: 8px;
+    }
+    .form-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(245,200,66,0.45); }
+    .form-note { text-align: center; font-size: 0.75rem; color: var(--w50); margin-top: 6px; }
+    @media (max-width: 560px) {
+      .form-row { grid-template-columns: 1fr; }
+      .apply-section { padding: 64px 20px; }
+    }
+
+    /* ─── FOOTER ─── */
+    .footer { background: var(--pink-deeper); padding: 64px 40px 28px; }
+    .footer-top {
+      display: flex; justify-content: space-between;
+      align-items: flex-start; gap: 40px; margin-bottom: 52px; flex-wrap: wrap;
+    }
+    .footer-brand { max-width: 280px; }
+    .footer-logo img { height: 46px; width: auto; filter: brightness(0) invert(1); margin-bottom: 10px; display: block; }
+    .footer-tagline { font-size: 0.72rem; letter-spacing: 3px; color: var(--yellow); text-transform: uppercase; margin-bottom: 14px; }
+    .footer-desc { font-size: 0.84rem; color: var(--w75); line-height: 1.65; }
+    .footer-col h4 { font-family: var(--heading); font-size: 0.72rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--yellow); margin-bottom: 16px; }
+    .footer-col a { display: block; color: var(--w75); text-decoration: none; font-size: 0.86rem; margin-bottom: 10px; transition: color 0.2s; }
+    .footer-col a:hover { color: var(--white); }
+    .email-row { display: flex; margin-top: 6px; }
+    .email-input { flex: 1; padding: 10px 16px; background: var(--w08); border: 1px solid var(--w20); border-right: none; border-radius: 8px 0 0 8px; color: var(--white); font-family: var(--body); font-size: 0.84rem; outline: none; }
+    .email-input::placeholder { color: var(--w50); }
+    .email-btn { padding: 10px 20px; background: var(--yellow); color: #1a1a1a; border: none; border-radius: 0 8px 8px 0; font-weight: 700; font-size: 0.82rem; cursor: pointer; }
+    .email-btn:hover { background: #FFD700; }
+    .footer-divider { height: 1px; background: var(--w08); margin-bottom: 22px; }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+    .footer-copy { font-size: 0.78rem; color: var(--w50); }
+    .footer-bl { display: flex; gap: 20px; }
+    .footer-bl a { font-size: 0.76rem; color: var(--w50); text-decoration: none; transition: color 0.2s; }
+    .footer-bl a:hover { color: var(--white); }
+    @media (max-width: 480px) { .footer { padding: 48px 20px 24px; } }
+
+    /* ─── SUCCESS MESSAGE ─── */
+    #form-success {
+      display: none; text-align: center; padding: 32px;
+      background: rgba(143,198,70,0.15); border: 1px solid var(--green);
+      border-radius: 16px; margin-top: 24px;
+    }
+    #form-success i { font-size: 2rem; color: var(--green); margin-bottom: 12px; display: block; }
+    #form-success h4 { font-family: var(--heading); font-size: 1.1rem; margin-bottom: 8px; }
+    #form-success p { font-size: 0.88rem; color: var(--w75); }
+
+    /* ─── ENTRY TRANSITION ─── */
+    #page-entry {
+      position: fixed; inset: 0; background: var(--yellow);
+      z-index: 99999; pointer-events: none;
+      animation: circleReveal 0.65s cubic-bezier(0.7,0,0.3,1) 0.05s forwards;
+    }
+    @keyframes circleReveal {
+      from { clip-path: circle(150% at 50% 50%); }
+      to   { clip-path: circle(0% at 50% 50%); }
+    }
+  </style>
+</head>
+<body>
+
+<div id="scroll-progress"></div>
+<div id="page-entry"></div>
+
+<!-- NAVBAR -->
+<div id="navbar-outer">
+  <nav id="navbar">
+    <div class="nav-left-group">
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="shop.html">Shop</a></li>
+      </ul>
+    </div>
+    <a href="index.html" class="nav-logo">
+      <img src="logo.png" alt="SOPREME"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span class="nav-logo-fallback">SOPREME™</span>
+    </a>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="wholesale.html" class="active">Wholesale</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <a href="shop.html" class="nav-shop-btn">Shop Now</a>
+    </div>
+  </nav>
+</div>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="page-hero-grid"></div>
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+  <div class="page-hero-eyebrow">✦ &nbsp;Partner With Us&nbsp; ✦</div>
+  <h1>Bring <span>SOPREME™</span><br>to Your Store</h1>
+  <p>Join a growing network of retailers carrying the Supreme Superfruit™. Earn more, sell faster, and give your customers something they can't find anywhere else.</p>
+  <div class="hero-btns">
+    <a href="#apply" class="btn-primary">Apply Now &nbsp;→</a>
+    <a href="#program" class="btn-outline">See Program Details</a>
+  </div>
+</section>
+
+<!-- PERKS STRIP -->
+<div class="perks-strip">
+  <div class="perks-inner">
+    <div class="perk-item"><i class="ph-bold ph-tag"></i> 50% Off First Order</div>
+    <div class="perk-item"><i class="ph-bold ph-truck"></i> 1 Year Free Shipping</div>
+    <div class="perk-item"><i class="ph-bold ph-calendar-blank"></i> 60-Day Payment Terms</div>
+    <div class="perk-item"><i class="ph-bold ph-headset"></i> Dedicated Support</div>
+  </div>
+</div>
+
+<!-- WHY SECTION -->
+<section class="why-section">
+  <div style="max-width:1100px;margin:0 auto;text-align:center;">
+    <div class="section-label">Why SOPREME™</div>
+    <h2 class="section-title">A Brand Your Customers<br>Will Come Back For</h2>
+  </div>
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="why-icon"><i class="ph-bold ph-trend-up"></i></div>
+      <h3>High Repeat Purchase Rate</h3>
+      <p>Soursop is a daily wellness ritual for our customers. Once they try it, they reorder consistently — driving predictable revenue for your store.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon"><i class="ph-bold ph-seal-check"></i></div>
+      <h3>100% Clean Label</h3>
+      <p>One ingredient. No additives, no fillers, no compromises. SOPREME is the only soursop brand your health-conscious shoppers can trust completely.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon"><i class="ph-bold ph-storefront"></i></div>
+      <h3>Already in Major Retailers</h3>
+      <p>Found at Whole Foods, Sprouts, HEB, and Gelson's. Your customers already know the brand — they're looking for it on your shelves too.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon"><i class="ph-bold ph-leaf"></i></div>
+      <h3>Non-GMO & Kosher Certified</h3>
+      <p>Meets the highest standards for natural food retailers. Ready to sell on day one with certifications your buyers require.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon"><i class="ph-bold ph-chart-bar"></i></div>
+      <h3>Strong Sell-Through Rate</h3>
+      <p>Eye-catching packaging and strong brand identity drive impulse purchases. SOPREME doesn't sit on shelves — it moves.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon"><i class="ph-bold ph-handshake"></i></div>
+      <h3>Flexible Terms for Partners</h3>
+      <p>We grow when you grow. From net-60 payment terms to free shipping on first-year orders, we set you up for success from the start.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRAM DETAILS -->
+<section class="program-section" id="program">
+  <div class="program-inner">
+    <div class="program-left">
+      <div class="section-label">The Program</div>
+      <h2 class="section-title">Everything You Need<br>to Get Started</h2>
+      <ul class="program-list">
+        <li><i class="ph-bold ph-check-circle"></i><span><strong>50% off your first order</strong> — the lowest-risk way to bring a new brand into your store.</span></li>
+        <li><i class="ph-bold ph-check-circle"></i><span><strong>Free shipping for 1 full year</strong> — no freight surprises eating into your margin.</span></li>
+        <li><i class="ph-bold ph-check-circle"></i><span><strong>60-day payment terms</strong> for qualified retailers — sell before you pay.</span></li>
+        <li><i class="ph-bold ph-check-circle"></i><span><strong>Dedicated wholesale rep</strong> — a real person who knows your account and answers fast.</span></li>
+        <li><i class="ph-bold ph-check-circle"></i><span><strong>Marketing assets included</strong> — shelf talkers, digital assets, and social content provided.</span></li>
+        <li><i class="ph-bold ph-check-circle"></i><span><strong>Low minimum order quantity</strong> — designed to fit stores of all sizes.</span></li>
+      </ul>
+      <a href="#apply" class="btn-primary">Apply for Wholesale &nbsp;→</a>
+    </div>
+    <div class="program-right">
+      <div class="stat-card">
+        <div class="stat-number">50%</div>
+        <div class="stat-label">Off First Order</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">1 yr</div>
+        <div class="stat-label">Free Shipping</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">60</div>
+        <div class="stat-label">Day Payment Terms</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">4+</div>
+        <div class="stat-label">Product SKUs</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHO QUALIFIES -->
+<section class="qualify-section">
+  <div class="section-label">Who Can Apply</div>
+  <h2 class="section-title" style="margin-bottom:40px;">We Partner With All<br>Types of Retailers</h2>
+  <div class="qualify-grid">
+    <div class="qualify-pill"><i class="ph-bold ph-storefront"></i> Grocery Stores</div>
+    <div class="qualify-pill"><i class="ph-bold ph-leaf"></i> Health Food Stores</div>
+    <div class="qualify-pill"><i class="ph-bold ph-drop"></i> Juice Bars</div>
+    <div class="qualify-pill"><i class="ph-bold ph-barbell"></i> Gyms & Fitness Centers</div>
+    <div class="qualify-pill"><i class="ph-bold ph-first-aid"></i> Wellness Shops</div>
+    <div class="qualify-pill"><i class="ph-bold ph-coffee"></i> Cafés & Smoothie Shops</div>
+    <div class="qualify-pill"><i class="ph-bold ph-globe"></i> Online Retailers</div>
+    <div class="qualify-pill"><i class="ph-bold ph-hospital"></i> Natural Pharmacies</div>
+  </div>
+</section>
+
+<!-- APPLICATION FORM -->
+<section class="apply-section" id="apply">
+  <div class="apply-inner">
+    <div class="section-label">Get Started</div>
+    <h2 class="section-title">Apply for a<br>Wholesale Account</h2>
+    <p class="apply-sub">Fill out the form below and our wholesale team will be in touch within 1–2 business days.</p>
+    <form class="apply-form" id="apply-form" onsubmit="submitForm(event)">
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" class="form-input" placeholder="Jane" required>
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" class="form-input" placeholder="Smith" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Business Name</label>
+        <input type="text" class="form-input" placeholder="Your Store Name" required>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" class="form-input" placeholder="jane@yourstore.com" required>
+        </div>
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="tel" class="form-input" placeholder="(555) 000-0000">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Store Type</label>
+          <select class="form-select form-input" required>
+            <option value="" disabled selected>Select store type</option>
+            <option>Grocery Store</option>
+            <option>Health Food Store</option>
+            <option>Juice Bar</option>
+            <option>Gym / Fitness Center</option>
+            <option>Café / Smoothie Shop</option>
+            <option>Wellness Shop</option>
+            <option>Online Retailer</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Number of Locations</label>
+          <select class="form-select form-input" required>
+            <option value="" disabled selected>Select range</option>
+            <option>1</option>
+            <option>2–5</option>
+            <option>6–20</option>
+            <option>21–50</option>
+            <option>50+</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Tell Us About Your Store</label>
+        <textarea class="form-textarea" placeholder="Where are you located? What products do you currently carry? Any questions for us?"></textarea>
+      </div>
+      <button type="submit" class="form-submit">Submit Application &nbsp;→</button>
+      <p class="form-note">We'll respond within 1–2 business days. No spam, ever.</p>
+    </form>
+    <div id="form-success">
+      <i class="ph-bold ph-check-circle"></i>
+      <h4>Application Received!</h4>
+      <p>Thank you for your interest in partnering with SOPREME™. Our wholesale team will be in touch within 1–2 business days.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <img src="logo.png" alt="SOPREME" onerror="this.style.display='none'">
+      </div>
+      <div class="footer-tagline">The Supreme Superfruit™</div>
+      <p class="footer-desc">100% natural soursop products made for everyday wellness. One ingredient. Nothing added.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Shop</h4>
+      <a href="shop.html">Soursop Juice (Can)</a>
+      <a href="shop.html">Soursop Bitters</a>
+      <a href="shop.html">Soursop Leaf Tea</a>
+      <a href="shop.html">Bundles</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="index.html">Home</a>
+      <a href="wholesale.html">Wholesale</a>
+      <a href="contact.html">Contact Us</a>
+    </div>
+    <div class="footer-col">
+      <h4>Join Club SOPREME</h4>
+      <p style="font-size:0.84rem;color:var(--w75);margin-bottom:12px;line-height:1.5">Get the latest news, deals, and drops!</p>
+      <div class="email-row">
+        <input type="email" placeholder="Enter your email" class="email-input">
+        <button class="email-btn">→</button>
+      </div>
+    </div>
+  </div>
+  <div class="footer-divider"></div>
+  <div class="footer-bottom">
+    <div class="footer-copy">Copyright © SOPREME™, LLC 2026</div>
+    <div class="footer-bl">
+      <a href="shop.html">Shop All</a>
+      <a href="#">Terms</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Shipping</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+if (history.scrollRestoration) history.scrollRestoration = 'manual';
+window.scrollTo(0, 0);
+
+window.addEventListener('scroll', () => {
+  const total = document.documentElement.scrollHeight - window.innerHeight;
+  document.getElementById('scroll-progress').style.width = (window.scrollY / total * 100) + '%';
+  document.getElementById('navbar-outer').classList.toggle('pill', window.scrollY > 60);
+}, {passive: true});
+
+function submitForm(e) {
+  e.preventDefault();
+  document.getElementById('apply-form').style.display = 'none';
+  document.getElementById('form-success').style.display = 'block';
+  document.getElementById('form-success').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+</script>
+</body>
+</html>
