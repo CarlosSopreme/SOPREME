@@ -568,13 +568,24 @@
 
     .pdp-left {
       background: #fff;
-      display: flex; align-items: center; justify-content: center;
-      padding: 40px; min-height: 380px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 32px 32px 20px; min-height: 380px; gap: 16px;
     }
     .pdp-img {
-      max-width: 100%; max-height: 340px;
-      object-fit: contain;
+      max-width: 100%; max-height: 300px;
+      object-fit: contain; transition: opacity 0.2s;
     }
+    .pdp-gallery {
+      display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
+    }
+    .pdp-thumb {
+      width: 56px; height: 56px; border-radius: 8px;
+      object-fit: contain; background: #f5f5f5;
+      border: 2px solid transparent; cursor: pointer;
+      padding: 4px; transition: border-color 0.2s;
+    }
+    .pdp-thumb:hover { border-color: #ccc; }
+    .pdp-thumb.active { border-color: var(--pink); }
 
     .pdp-right {
       padding: 40px 48px 40px 36px;
@@ -673,8 +684,9 @@
 
     @media (max-width: 768px) {
       .pdp-inner { grid-template-columns: 1fr; overflow-y: auto; }
-      .pdp-left { min-height: 240px; padding: 28px; border-radius: 0; }
-      .pdp-img { max-height: 200px; }
+      .pdp-left { min-height: 220px; padding: 20px 20px 14px; border-radius: 0; }
+      .pdp-img { max-height: 170px; }
+      .pdp-thumb { width: 44px; height: 44px; }
       .pdp-right { padding: 24px 24px 40px; overflow-y: visible; }
       .pdp-price { font-size: 1.6rem; }
     }
@@ -759,7 +771,7 @@
     <!-- Soursop Juice 12-Pack -->
     <div class="product-card" data-category="juice" data-price="44.99" onclick="openProduct('juice-12')">
       <div class="card-img-wrap">
-        <img src="products/juice-12pack.png" alt="Soursop Juice 12-Pack"
+        <img src="products/sopreme-soursop-juice-12-pack-cans.jpg.png" alt="Soursop Juice 12-Pack"
              onerror="this.src=''; this.parentElement.style.background='#fce4ef'">
       </div>
       <div class="card-body">
@@ -777,7 +789,7 @@
     <div class="product-card" data-category="juice" data-price="19.95" onclick="openProduct('juice-4')">
       <div class="card-img-wrap">
         <span class="card-badge best">Best Seller</span>
-        <img src="products/juice-4pack.webp" alt="Soursop Juice 4-Pack"
+        <img src="products/sopreme-soursop-juice-4-pack-4-pack.jpg.png" alt="Soursop Juice 4-Pack"
              onerror="this.src=''; this.parentElement.style.background='#fce4ef'">
       </div>
       <div class="card-body">
@@ -795,7 +807,7 @@
     <div class="product-card" data-category="bitters" data-price="24.95" onclick="openProduct('bitters')">
       <div class="card-img-wrap">
         <span class="card-badge new">New</span>
-        <img src="products/bitters.webp" alt="Soursop Bitters"
+        <img src="products/Bitters.png" alt="Soursop Bitters"
              onerror="this.src=''; this.parentElement.style.background='#fce4ef'">
       </div>
       <div class="card-body">
@@ -812,7 +824,7 @@
     <!-- Soursop Leaf Tea -->
     <div class="product-card" data-category="tea" data-price="16.95" onclick="openProduct('tea')">
       <div class="card-img-wrap">
-        <img src="products/tea.webp" alt="Soursop Leaf Tea"
+        <img src="products/Tea.png" alt="Soursop Leaf Tea"
              onerror="this.src=''; this.parentElement.style.background='#fce4ef'">
       </div>
       <div class="card-body">
@@ -830,7 +842,7 @@
     <div class="product-card" data-category="bundle" data-price="34.95" onclick="openProduct('bundle-bt')">
       <div class="card-img-wrap">
         <span class="card-badge" style="background:var(--pink-dark)">Bundle</span>
-        <img src="products/chatgpt1.webp" alt="Bitters + Tea Bundle"
+        <img src="products/bitters-tea-bundle.png" alt="Bitters + Tea Bundle"
              onerror="this.src=''; this.parentElement.style.background='#fce4ef'">
       </div>
       <div class="card-body">
@@ -848,7 +860,7 @@
     <div class="product-card" data-category="bundle" data-price="59.95" onclick="openProduct('bundle-double')">
       <div class="card-img-wrap">
         <span class="card-badge" style="background:var(--pink-dark)">Bundle</span>
-        <img src="products/chatgpt2.webp" alt="Double Up Bundle"
+        <img src="products/daily-ritual-bundle.png" alt="Double Up Bundle"
              onerror="this.src=''; this.parentElement.style.background='#fce4ef'">
       </div>
       <div class="card-body">
@@ -866,7 +878,7 @@
     <div class="product-card" data-category="bundle" data-price="74.95" onclick="openProduct('bundle-complete')">
       <div class="card-img-wrap">
         <span class="card-badge" style="background:var(--pink-dark)">Bundle</span>
-        <img src="products/chatgpt3.webp" alt="Complete Collection"
+        <img src="products/juice-tea-bitters.png" alt="Complete Collection"
              onerror="this.src=''; this.parentElement.style.background='#fce4ef'">
       </div>
       <div class="card-body">
@@ -949,6 +961,7 @@
   <div class="pdp-inner">
     <div class="pdp-left">
       <img src="" alt="" id="pdp-img" class="pdp-img">
+      <div class="pdp-gallery" id="pdp-gallery"></div>
     </div>
     <div class="pdp-right">
       <div class="pdp-badges" id="pdp-badges"></div>
@@ -1125,7 +1138,12 @@ const PRODUCTS = {
     subtitle: '12 Cans · 12 FL OZ each · With Pulp',
     price: 44.99, pricePer: '$3.75 / can',
     variantId: 48197826576634,
-    image: 'products/juice-12pack.png',
+    images: [
+      'products/sopreme-soursop-juice-12-pack-cans.jpg.png',
+      'products/sopreme-soursop-juice-12-pack-box.jpg.png',
+      'products/sopreme-soursop-juice-packaging-detail-12-pack.jpg.png',
+      'products/juice-12pack-lifestyle.png'
+    ],
     badges: [],
     description: '100% pure soursop juice with pulp. No additives, no preservatives, no concentrates. Just whole soursop fruit, cold-pressed and canned at peak freshness. Enjoy the rich tropical taste of soursop exactly as nature intended.',
     benefits: ['Rich in Antioxidants & Acetogenins', 'Supports Immune System', 'Gentle on Digestion', 'Supports Relaxation & Sleep', 'Natural Electrolytes', 'Non-GMO & Kosher Certified'],
@@ -1136,7 +1154,12 @@ const PRODUCTS = {
     subtitle: '4 Cans · 12 FL OZ each · With Pulp',
     price: 15.96, pricePer: '$3.99 / can',
     variantId: 48197789286650,
-    image: 'products/juice-4pack.webp',
+    images: [
+      'products/sopreme-soursop-juice-4-pack-4-pack.jpg.png',
+      'products/sopreme-soursop-juice-can-4-pack.jpg.png',
+      'products/sopreme-soursop-juice-packaging-4-pack.jpg.png',
+      'products/sopreme-soursop-juice-tropical-4-pack.jpg.png'
+    ],
     badges: [{ label: 'Best Seller', cls: 'yellow' }],
     description: '100% pure soursop juice with pulp. No additives, no preservatives, no concentrates. Just whole soursop fruit, cold-pressed and canned at peak freshness. The perfect starter size.',
     benefits: ['Rich in Antioxidants & Acetogenins', 'Supports Immune System', 'Gentle on Digestion', 'Supports Relaxation & Sleep', 'Natural Electrolytes', 'Non-GMO & Kosher Certified'],
@@ -1147,7 +1170,7 @@ const PRODUCTS = {
     subtitle: 'Dietary Supplement · 16 FL OZ / 473 mL',
     price: 35.99, pricePer: 'Dietary Supplement',
     variantId: 48196870209786,
-    image: 'products/bitters.webp',
+    images: ['products/Bitters.png'],
     badges: [{ label: 'New', cls: 'yellow' }],
     description: 'A concentrated herbal extract made from 100% natural soursop leaves and fruit. Used traditionally for centuries to support whole-body wellness. A few drops a day goes a long way.',
     benefits: ['Supports Immune Function', 'Anti-Inflammatory Properties', 'Rich in Acetogenins', 'Digestive Wellness', 'Cellular Protection', 'No Artificial Additives'],
@@ -1158,7 +1181,7 @@ const PRODUCTS = {
     subtitle: 'Herbal Tea · 15 Tea Bags · Tropical Lemon',
     price: 19.99, pricePer: '$1.33 / bag',
     variantId: 48196885512442,
-    image: 'products/tea.webp',
+    images: ['products/Tea.png'],
     badges: [],
     description: 'Naturally caffeine-free herbal tea made from dried soursop leaves. A soothing, tropical cup that supports daily wellness — perfect any time of day, morning or night.',
     benefits: ['Naturally Caffeine-Free', 'Calming & Stress-Reducing', 'Supports Better Sleep', 'Digestive Support', 'Rich in Antioxidants', 'No Artificial Flavors'],
@@ -1169,7 +1192,7 @@ const PRODUCTS = {
     subtitle: '1 Bitters · 1 Leaf Tea · Save 15%',
     price: 54.99, pricePer: 'Save 15%',
     variantId: 48196924571898,
-    image: 'products/chatgpt1.webp',
+    images: ['products/bitters-tea-bundle.png'],
     badges: [{ label: 'Bundle', cls: '' }],
     description: 'The perfect daily wellness duo. Combine the concentrated power of Soursop Bitters with the soothing calm of Soursop Leaf Tea for a complete morning-to-night ritual.',
     benefits: ['Full-Spectrum Soursop Wellness', 'Day & Night Routine', 'Save 15% vs. Buying Separately', 'Supports Immunity & Relaxation', 'All Natural Ingredients'],
@@ -1180,7 +1203,7 @@ const PRODUCTS = {
     subtitle: '2 Bitters · 3 Leaf Tea · Best Value',
     price: 129.99, pricePer: 'Best Value',
     variantId: 48196980605178,
-    image: 'products/chatgpt2.webp',
+    images: ['products/daily-ritual-bundle.png'],
     badges: [{ label: 'Bundle', cls: '' }],
     description: 'Double your wellness routine. Two bottles of Soursop Bitters and three boxes of Soursop Leaf Tea — the best value for serious soursop enthusiasts or sharing with family.',
     benefits: ['2-Month Supply of Bitters', '45 Days of Soursop Tea', 'Best Per-Unit Price', 'Great for Sharing or Gifting', 'All Natural Ingredients'],
@@ -1191,7 +1214,7 @@ const PRODUCTS = {
     subtitle: 'Juice · Bitters · Tea · Everything SOPREME',
     price: 99.99, pricePer: 'Best Deal',
     variantId: 48197874254074,
-    image: 'products/chatgpt3.webp',
+    images: ['products/juice-tea-bitters.png'],
     badges: [{ label: 'Bundle', cls: '' }],
     description: 'Everything SOPREME has to offer in one box. The ultimate soursop wellness starter pack — perfect for first-timers or anyone who wants the full experience.',
     benefits: ['Complete Soursop Experience', 'Juice + Bitters + Tea Included', 'Best Introduction to SOPREME', 'Great Value vs. Individual Prices', 'All Natural Ingredients'],
@@ -1201,6 +1224,12 @@ const PRODUCTS = {
 
 let pdpVariant = null, pdpName = null, pdpPrice = null, pdpQtyVal = 1;
 
+function switchPdpImage(src, thumbEl) {
+  document.getElementById('pdp-img').src = src;
+  document.querySelectorAll('.pdp-thumb').forEach(t => t.classList.remove('active'));
+  if (thumbEl) thumbEl.classList.add('active');
+}
+
 function openProduct(id) {
   const p = PRODUCTS[id];
   if (!p) return;
@@ -1209,7 +1238,7 @@ function openProduct(id) {
   pdpPrice = p.price;
   pdpQtyVal = 1;
   document.getElementById('pdp-qty-num').textContent = 1;
-  document.getElementById('pdp-img').src = p.image;
+  document.getElementById('pdp-img').src = p.images[0];
   document.getElementById('pdp-img').alt = p.name;
   document.getElementById('pdp-name').textContent = p.name;
   document.getElementById('pdp-subtitle').textContent = p.subtitle;
@@ -1220,6 +1249,16 @@ function openProduct(id) {
     `<span class="pdp-badge ${b.cls}">${b.label}</span>`).join('');
   document.getElementById('pdp-benefits').innerHTML = p.benefits.map(b => `<li>${b}</li>`).join('');
   document.getElementById('pdp-ingredients').textContent = p.ingredients;
+  const gallery = document.getElementById('pdp-gallery');
+  if (p.images.length > 1) {
+    gallery.innerHTML = p.images.map((src, i) =>
+      `<img src="${src}" class="pdp-thumb${i === 0 ? ' active' : ''}" onclick="switchPdpImage('${src}', this)" alt="">`
+    ).join('');
+    gallery.style.display = 'flex';
+  } else {
+    gallery.innerHTML = '';
+    gallery.style.display = 'none';
+  }
   document.getElementById('pdp-modal').classList.add('open');
   document.getElementById('pdp-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
