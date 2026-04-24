@@ -521,6 +521,164 @@
       color: rgba(255,255,255,0.45); margin-top: 10px;
     }
 
+    /* ─── PRODUCT DETAIL MODAL ─── */
+    .pdp-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.65);
+      z-index: 850;
+      opacity: 0; visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s;
+    }
+    .pdp-overlay.open { opacity: 1; visibility: visible; }
+
+    .pdp-modal {
+      position: fixed; left: 0; right: 0; bottom: 0;
+      max-height: 92vh;
+      background: var(--pink-deeper);
+      z-index: 860;
+      border-radius: 24px 24px 0 0;
+      transform: translateY(100%);
+      transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+      overflow: hidden;
+      display: flex; flex-direction: column;
+    }
+    .pdp-modal.open { transform: translateY(0); }
+
+    .pdp-handle {
+      width: 40px; height: 4px; border-radius: 2px;
+      background: var(--w20); margin: 12px auto 0;
+      flex-shrink: 0;
+    }
+
+    .pdp-close {
+      position: absolute; top: 18px; right: 20px;
+      background: var(--w12); border: none;
+      color: var(--white); width: 36px; height: 36px;
+      border-radius: 50%; font-size: 1rem;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s; z-index: 2;
+    }
+    .pdp-close:hover { background: var(--w20); }
+
+    .pdp-inner {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      flex: 1; overflow: hidden;
+    }
+
+    .pdp-left {
+      background: #fff;
+      display: flex; align-items: center; justify-content: center;
+      padding: 40px; min-height: 380px;
+    }
+    .pdp-img {
+      max-width: 100%; max-height: 340px;
+      object-fit: contain;
+    }
+
+    .pdp-right {
+      padding: 40px 48px 40px 36px;
+      overflow-y: auto;
+      display: flex; flex-direction: column; gap: 14px;
+    }
+
+    .pdp-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+    .pdp-badge {
+      font-size: 0.68rem; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase;
+      padding: 4px 12px; border-radius: 50px;
+      background: var(--pink-dark); color: var(--white);
+    }
+    .pdp-badge.yellow { background: var(--yellow); color: #1a1a1a; }
+
+    .pdp-name {
+      font-family: var(--heading);
+      font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+      font-weight: 700; color: var(--white); line-height: 1.2;
+    }
+    .pdp-subtitle { font-size: 0.85rem; color: var(--w50); }
+
+    .pdp-price-row { display: flex; align-items: baseline; gap: 12px; }
+    .pdp-price {
+      font-family: var(--heading);
+      font-size: 2rem; font-weight: 700; color: var(--yellow);
+    }
+    .pdp-price-per { font-size: 0.8rem; color: var(--w50); }
+
+    .pdp-divider { height: 1px; background: var(--w12); }
+
+    .pdp-desc { font-size: 0.9rem; color: var(--w75); line-height: 1.7; }
+
+    .pdp-section-label {
+      font-size: 0.7rem; font-weight: 800;
+      letter-spacing: 3px; text-transform: uppercase;
+      color: var(--green); margin-bottom: 10px;
+    }
+    .pdp-benefits-list {
+      list-style: none; display: flex; flex-direction: column; gap: 8px;
+    }
+    .pdp-benefits-list li {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 0.86rem; color: var(--w75);
+    }
+    .pdp-benefits-list li::before {
+      content: '';
+      width: 18px; height: 18px; flex-shrink: 0;
+      border-radius: 50%;
+      background: rgba(143,198,70,0.15) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6l3 3 5-5' stroke='%238fc646' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E") center/12px no-repeat;
+      border: 1.5px solid rgba(143,198,70,0.4);
+    }
+
+    .pdp-ingredients-text {
+      font-size: 0.82rem; color: var(--w50); line-height: 1.65;
+    }
+
+    .pdp-actions {
+      display: flex; align-items: center; gap: 14px; margin-top: 4px;
+    }
+    .pdp-qty-wrap {
+      display: flex; align-items: center;
+      background: var(--w08); border: 1px solid var(--w20);
+      border-radius: 50px; overflow: hidden; flex-shrink: 0;
+    }
+    .pdp-qty-btn {
+      width: 40px; height: 44px;
+      background: none; border: none; color: var(--white);
+      font-size: 1.2rem; font-weight: 700; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+    }
+    .pdp-qty-btn:hover { background: var(--w12); }
+    .pdp-qty-num {
+      min-width: 32px; text-align: center;
+      font-family: var(--heading); font-size: 1rem; font-weight: 700;
+    }
+    .pdp-add-btn {
+      flex: 1; padding: 13px 20px;
+      background: var(--yellow); color: #1a1a1a;
+      border: none; border-radius: 50px;
+      font-family: var(--body); font-size: 0.88rem; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .pdp-add-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(245,200,66,0.45); }
+
+    /* card click indicator */
+    .product-card { cursor: pointer; }
+    .card-details-hint {
+      font-size: 0.72rem; color: #999;
+      letter-spacing: 0.5px; margin-bottom: 10px;
+      display: flex; align-items: center; gap: 4px;
+    }
+
+    @media (max-width: 768px) {
+      .pdp-inner { grid-template-columns: 1fr; overflow-y: auto; }
+      .pdp-left { min-height: 240px; padding: 28px; border-radius: 0; }
+      .pdp-img { max-height: 200px; }
+      .pdp-right { padding: 24px 24px 40px; overflow-y: visible; }
+      .pdp-price { font-size: 1.6rem; }
+    }
+
     /* ─── ENTRY TRANSITION ─── */
     #page-entry {
       position: fixed; inset: 0;
@@ -599,7 +757,7 @@
   <div class="product-grid" id="product-grid">
 
     <!-- Soursop Juice 12-Pack -->
-    <div class="product-card" data-category="juice" data-price="44.99">
+    <div class="product-card" data-category="juice" data-price="44.99" onclick="openProduct('juice-12')">
       <div class="card-img-wrap">
         <img src="products/juice-12pack.png" alt="Soursop Juice 12-Pack"
              onerror="this.src=''; this.parentElement.style.background='#fce4ef'">
@@ -611,12 +769,12 @@
           <span class="card-price">$44.99</span>
           <span class="card-price-per">$3.75 / can</span>
         </div>
-        <button class="card-btn add" onclick="addToCart(48197826576634, '100% Pure Soursop Juice (12-Pack)', 44.99)">Add to Cart</button>
+        <button class="card-btn add" onclick="event.stopPropagation(); addToCart(48197826576634, '100% Pure Soursop Juice (12-Pack)', 44.99)">Add to Cart</button>
       </div>
     </div>
 
     <!-- Soursop Juice 4-Pack -->
-    <div class="product-card" data-category="juice" data-price="19.95">
+    <div class="product-card" data-category="juice" data-price="19.95" onclick="openProduct('juice-4')">
       <div class="card-img-wrap">
         <span class="card-badge best">Best Seller</span>
         <img src="products/juice-4pack.webp" alt="Soursop Juice 4-Pack"
@@ -629,12 +787,12 @@
           <span class="card-price">$15.96</span>
           <span class="card-price-per">$3.99 / can</span>
         </div>
-        <button class="card-btn add" onclick="addToCart(48197789286650, '100% Pure Soursop Juice (4-Pack)', 15.96)">Add to Cart</button>
+        <button class="card-btn add" onclick="event.stopPropagation(); addToCart(48197789286650, '100% Pure Soursop Juice (4-Pack)', 15.96)">Add to Cart</button>
       </div>
     </div>
 
     <!-- Soursop Bitters -->
-    <div class="product-card" data-category="bitters" data-price="24.95">
+    <div class="product-card" data-category="bitters" data-price="24.95" onclick="openProduct('bitters')">
       <div class="card-img-wrap">
         <span class="card-badge new">New</span>
         <img src="products/bitters.webp" alt="Soursop Bitters"
@@ -647,12 +805,12 @@
           <span class="card-price">$35.99</span>
           <span class="card-price-per">Dietary Supplement</span>
         </div>
-        <button class="card-btn add" onclick="addToCart(48196870209786, '100% Natural Soursop Bitters', 35.99)">Add to Cart</button>
+        <button class="card-btn add" onclick="event.stopPropagation(); addToCart(48196870209786, '100% Natural Soursop Bitters', 35.99)">Add to Cart</button>
       </div>
     </div>
 
     <!-- Soursop Leaf Tea -->
-    <div class="product-card" data-category="tea" data-price="16.95">
+    <div class="product-card" data-category="tea" data-price="16.95" onclick="openProduct('tea')">
       <div class="card-img-wrap">
         <img src="products/tea.webp" alt="Soursop Leaf Tea"
              onerror="this.src=''; this.parentElement.style.background='#fce4ef'">
@@ -664,12 +822,12 @@
           <span class="card-price">$19.99</span>
           <span class="card-price-per">$1.33 / bag</span>
         </div>
-        <button class="card-btn add" onclick="addToCart(48196885512442, '100% Natural Soursop Leaf Tea', 19.99)">Add to Cart</button>
+        <button class="card-btn add" onclick="event.stopPropagation(); addToCart(48196885512442, '100% Natural Soursop Leaf Tea', 19.99)">Add to Cart</button>
       </div>
     </div>
 
     <!-- Bitters + Tea Bundle -->
-    <div class="product-card" data-category="bundle" data-price="34.95">
+    <div class="product-card" data-category="bundle" data-price="34.95" onclick="openProduct('bundle-bt')">
       <div class="card-img-wrap">
         <span class="card-badge" style="background:var(--pink-dark)">Bundle</span>
         <img src="products/chatgpt1.webp" alt="Bitters + Tea Bundle"
@@ -682,12 +840,12 @@
           <span class="card-price">$54.99</span>
           <span class="card-price-per">Tea + Bitters</span>
         </div>
-        <button class="card-btn add" onclick="addToCart(48196924571898, 'Bitters + Tea Bundle', 54.99)">Add to Cart</button>
+        <button class="card-btn add" onclick="event.stopPropagation(); addToCart(48196924571898, 'Bitters + Tea Bundle', 54.99)">Add to Cart</button>
       </div>
     </div>
 
     <!-- Double Bundle -->
-    <div class="product-card" data-category="bundle" data-price="59.95">
+    <div class="product-card" data-category="bundle" data-price="59.95" onclick="openProduct('bundle-double')">
       <div class="card-img-wrap">
         <span class="card-badge" style="background:var(--pink-dark)">Bundle</span>
         <img src="products/chatgpt2.webp" alt="Double Up Bundle"
@@ -700,12 +858,12 @@
           <span class="card-price">$129.99</span>
           <span class="card-price-per">Best Value</span>
         </div>
-        <button class="card-btn add" onclick="addToCart(48196980605178, 'Soursop Daily Ritual Bundle', 129.99)">Add to Cart</button>
+        <button class="card-btn add" onclick="event.stopPropagation(); addToCart(48196980605178, 'Soursop Daily Ritual Bundle', 129.99)">Add to Cart</button>
       </div>
     </div>
 
     <!-- Complete Collection -->
-    <div class="product-card" data-category="bundle" data-price="74.95">
+    <div class="product-card" data-category="bundle" data-price="74.95" onclick="openProduct('bundle-complete')">
       <div class="card-img-wrap">
         <span class="card-badge" style="background:var(--pink-dark)">Bundle</span>
         <img src="products/chatgpt3.webp" alt="Complete Collection"
@@ -718,7 +876,7 @@
           <span class="card-price">$99.99</span>
           <span class="card-price-per">Best Deal</span>
         </div>
-        <button class="card-btn add" onclick="addToCart(48197874254074, 'Complete Soursop Bundle', 99.99)">Add to Cart</button>
+        <button class="card-btn add" onclick="event.stopPropagation(); addToCart(48197874254074, 'Complete Soursop Bundle', 99.99)">Add to Cart</button>
       </div>
     </div>
 
@@ -782,6 +940,45 @@
     </div>
   </div>
 </footer>
+
+<!-- PRODUCT DETAIL MODAL -->
+<div class="pdp-overlay" id="pdp-overlay"></div>
+<div class="pdp-modal" id="pdp-modal">
+  <div class="pdp-handle"></div>
+  <button class="pdp-close" id="pdp-close">✕</button>
+  <div class="pdp-inner">
+    <div class="pdp-left">
+      <img src="" alt="" id="pdp-img" class="pdp-img">
+    </div>
+    <div class="pdp-right">
+      <div class="pdp-badges" id="pdp-badges"></div>
+      <h2 class="pdp-name" id="pdp-name"></h2>
+      <div class="pdp-subtitle" id="pdp-subtitle"></div>
+      <div class="pdp-price-row">
+        <span class="pdp-price" id="pdp-price"></span>
+        <span class="pdp-price-per" id="pdp-price-per"></span>
+      </div>
+      <div class="pdp-divider"></div>
+      <p class="pdp-desc" id="pdp-desc"></p>
+      <div id="pdp-benefits-wrap">
+        <div class="pdp-section-label">Key Benefits</div>
+        <ul class="pdp-benefits-list" id="pdp-benefits"></ul>
+      </div>
+      <div id="pdp-ingredients-wrap">
+        <div class="pdp-section-label">Ingredients</div>
+        <div class="pdp-ingredients-text" id="pdp-ingredients"></div>
+      </div>
+      <div class="pdp-actions">
+        <div class="pdp-qty-wrap">
+          <button class="pdp-qty-btn" onclick="pdpQty(-1)">−</button>
+          <span class="pdp-qty-num" id="pdp-qty-num">1</span>
+          <button class="pdp-qty-btn" onclick="pdpQty(1)">+</button>
+        </div>
+        <button class="pdp-add-btn" id="pdp-add-btn">Add to Cart</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- CART DRAWER -->
 <div class="cart-overlay" id="cart-overlay"></div>
@@ -920,6 +1117,136 @@ function checkout() {
 document.getElementById('cart-close').addEventListener('click', closeCart);
 document.getElementById('cart-overlay').addEventListener('click', closeCart);
 document.getElementById('checkout-btn').addEventListener('click', checkout);
+
+/* ─── PRODUCT DETAIL MODAL ─── */
+const PRODUCTS = {
+  'juice-12': {
+    name: '100% Pure Soursop Juice',
+    subtitle: '12 Cans · 12 FL OZ each · With Pulp',
+    price: 44.99, pricePer: '$3.75 / can',
+    variantId: 48197826576634,
+    image: 'products/juice-12pack.png',
+    badges: [],
+    description: '100% pure soursop juice with pulp. No additives, no preservatives, no concentrates. Just whole soursop fruit, cold-pressed and canned at peak freshness. Enjoy the rich tropical taste of soursop exactly as nature intended.',
+    benefits: ['Rich in Antioxidants & Acetogenins', 'Supports Immune System', 'Gentle on Digestion', 'Supports Relaxation & Sleep', 'Natural Electrolytes', 'Non-GMO & Kosher Certified'],
+    ingredients: 'Soursop Juice, Soursop Pulp. No artificial colors, flavors, or preservatives.'
+  },
+  'juice-4': {
+    name: '100% Pure Soursop Juice',
+    subtitle: '4 Cans · 12 FL OZ each · With Pulp',
+    price: 15.96, pricePer: '$3.99 / can',
+    variantId: 48197789286650,
+    image: 'products/juice-4pack.webp',
+    badges: [{ label: 'Best Seller', cls: 'yellow' }],
+    description: '100% pure soursop juice with pulp. No additives, no preservatives, no concentrates. Just whole soursop fruit, cold-pressed and canned at peak freshness. The perfect starter size.',
+    benefits: ['Rich in Antioxidants & Acetogenins', 'Supports Immune System', 'Gentle on Digestion', 'Supports Relaxation & Sleep', 'Natural Electrolytes', 'Non-GMO & Kosher Certified'],
+    ingredients: 'Soursop Juice, Soursop Pulp. No artificial colors, flavors, or preservatives.'
+  },
+  'bitters': {
+    name: '100% Natural Soursop Bitters',
+    subtitle: 'Dietary Supplement · 16 FL OZ / 473 mL',
+    price: 35.99, pricePer: 'Dietary Supplement',
+    variantId: 48196870209786,
+    image: 'products/bitters.webp',
+    badges: [{ label: 'New', cls: 'yellow' }],
+    description: 'A concentrated herbal extract made from 100% natural soursop leaves and fruit. Used traditionally for centuries to support whole-body wellness. A few drops a day goes a long way.',
+    benefits: ['Supports Immune Function', 'Anti-Inflammatory Properties', 'Rich in Acetogenins', 'Digestive Wellness', 'Cellular Protection', 'No Artificial Additives'],
+    ingredients: 'Soursop Leaf Extract, Soursop Fruit Extract, Grain Alcohol (as natural preservative).'
+  },
+  'tea': {
+    name: '100% Natural Soursop Leaf Tea',
+    subtitle: 'Herbal Tea · 15 Tea Bags · Tropical Lemon',
+    price: 19.99, pricePer: '$1.33 / bag',
+    variantId: 48196885512442,
+    image: 'products/tea.webp',
+    badges: [],
+    description: 'Naturally caffeine-free herbal tea made from dried soursop leaves. A soothing, tropical cup that supports daily wellness — perfect any time of day, morning or night.',
+    benefits: ['Naturally Caffeine-Free', 'Calming & Stress-Reducing', 'Supports Better Sleep', 'Digestive Support', 'Rich in Antioxidants', 'No Artificial Flavors'],
+    ingredients: 'Dried Soursop Leaves, Natural Lemon Flavor. No artificial colors, flavors, or preservatives.'
+  },
+  'bundle-bt': {
+    name: 'Bitters + Tea Bundle',
+    subtitle: '1 Bitters · 1 Leaf Tea · Save 15%',
+    price: 54.99, pricePer: 'Save 15%',
+    variantId: 48196924571898,
+    image: 'products/chatgpt1.webp',
+    badges: [{ label: 'Bundle', cls: '' }],
+    description: 'The perfect daily wellness duo. Combine the concentrated power of Soursop Bitters with the soothing calm of Soursop Leaf Tea for a complete morning-to-night ritual.',
+    benefits: ['Full-Spectrum Soursop Wellness', 'Day & Night Routine', 'Save 15% vs. Buying Separately', 'Supports Immunity & Relaxation', 'All Natural Ingredients'],
+    ingredients: 'Includes: 1× Soursop Bitters (16 FL OZ) + 1× Soursop Leaf Tea (15 bags). See individual products for full ingredient details.'
+  },
+  'bundle-double': {
+    name: 'Double Up Bundle',
+    subtitle: '2 Bitters · 3 Leaf Tea · Best Value',
+    price: 129.99, pricePer: 'Best Value',
+    variantId: 48196980605178,
+    image: 'products/chatgpt2.webp',
+    badges: [{ label: 'Bundle', cls: '' }],
+    description: 'Double your wellness routine. Two bottles of Soursop Bitters and three boxes of Soursop Leaf Tea — the best value for serious soursop enthusiasts or sharing with family.',
+    benefits: ['2-Month Supply of Bitters', '45 Days of Soursop Tea', 'Best Per-Unit Price', 'Great for Sharing or Gifting', 'All Natural Ingredients'],
+    ingredients: 'Includes: 2× Soursop Bitters (16 FL OZ each) + 3× Soursop Leaf Tea (15 bags each). See individual products for full ingredient details.'
+  },
+  'bundle-complete': {
+    name: 'Complete Collection',
+    subtitle: 'Juice · Bitters · Tea · Everything SOPREME',
+    price: 99.99, pricePer: 'Best Deal',
+    variantId: 48197874254074,
+    image: 'products/chatgpt3.webp',
+    badges: [{ label: 'Bundle', cls: '' }],
+    description: 'Everything SOPREME has to offer in one box. The ultimate soursop wellness starter pack — perfect for first-timers or anyone who wants the full experience.',
+    benefits: ['Complete Soursop Experience', 'Juice + Bitters + Tea Included', 'Best Introduction to SOPREME', 'Great Value vs. Individual Prices', 'All Natural Ingredients'],
+    ingredients: 'Includes: 4-Pack Soursop Juice + Soursop Bitters (16 FL OZ) + Soursop Leaf Tea (15 bags). See individual products for full ingredient details.'
+  }
+};
+
+let pdpVariant = null, pdpName = null, pdpPrice = null, pdpQtyVal = 1;
+
+function openProduct(id) {
+  const p = PRODUCTS[id];
+  if (!p) return;
+  pdpVariant = p.variantId;
+  pdpName = p.name;
+  pdpPrice = p.price;
+  pdpQtyVal = 1;
+  document.getElementById('pdp-qty-num').textContent = 1;
+  document.getElementById('pdp-img').src = p.image;
+  document.getElementById('pdp-img').alt = p.name;
+  document.getElementById('pdp-name').textContent = p.name;
+  document.getElementById('pdp-subtitle').textContent = p.subtitle;
+  document.getElementById('pdp-price').textContent = '$' + p.price.toFixed(2);
+  document.getElementById('pdp-price-per').textContent = p.pricePer;
+  document.getElementById('pdp-desc').textContent = p.description;
+  document.getElementById('pdp-badges').innerHTML = p.badges.map(b =>
+    `<span class="pdp-badge ${b.cls}">${b.label}</span>`).join('');
+  document.getElementById('pdp-benefits').innerHTML = p.benefits.map(b => `<li>${b}</li>`).join('');
+  document.getElementById('pdp-ingredients').textContent = p.ingredients;
+  document.getElementById('pdp-modal').classList.add('open');
+  document.getElementById('pdp-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closePDP() {
+  document.getElementById('pdp-modal').classList.remove('open');
+  document.getElementById('pdp-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function pdpQty(delta) {
+  pdpQtyVal = Math.max(1, pdpQtyVal + delta);
+  document.getElementById('pdp-qty-num').textContent = pdpQtyVal;
+}
+
+document.getElementById('pdp-close').addEventListener('click', closePDP);
+document.getElementById('pdp-overlay').addEventListener('click', closePDP);
+document.getElementById('pdp-add-btn').addEventListener('click', () => {
+  if (!pdpVariant) return;
+  const key = String(pdpVariant);
+  cart[key] = cart[key] || { name: pdpName, price: pdpPrice, qty: 0 };
+  cart[key].qty += pdpQtyVal;
+  updateCartCount();
+  closePDP();
+  openCart();
+});
 </script>
 </body>
 </html>
